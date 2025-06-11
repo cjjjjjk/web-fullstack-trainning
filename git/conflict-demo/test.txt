@@ -1,1 +1,3 @@
 Test file conflict demo
+
+Đây là dòng được chỉnh sử trong nhánh main
