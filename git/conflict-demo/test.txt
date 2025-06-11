@@ -1,3 +1,4 @@
 Test file conflict demo
 
 Đây là dòng được chỉnh sử trong nhánh main
+Dòng này được chỉnh sửa trong nhánh: test-conflict
