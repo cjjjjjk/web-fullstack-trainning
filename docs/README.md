@@ -5,7 +5,8 @@
 - Git  
 - Git flow  
 
-**FE basic** [notebook](../fe-basic/docs.ipynb)  
+**WEB basic** [notebook](../web-basic/docs.ipynb)  
 - HTML 
 - JS, TS  
 - CSS, TAILWIND CSS, BOOTSTRAP  
+- NODEJS
