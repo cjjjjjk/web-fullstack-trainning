@@ -1,7 +1,22 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <IconBar />
   </div>
 </template>
 
-<style></style>
+<script>
+import IconBar from '@/components/iconsbar/IconBar.vue'
+
+export default {
+  name: 'AboutView',
+  components: {
+    IconBar
+  }
+}
+</script>
+
+<style>
+.about {
+  height: 50%;
+}
+</style>

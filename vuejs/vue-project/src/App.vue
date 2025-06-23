@@ -1,29 +1,45 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+const flex_column = ref('flex flex-column')
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
     <div class="wrapper">
-      <HelloWorld msg="Hello world!" />
-
-      <!-- <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav> -->
+      <nav class="nav-links">
+        <RouterLink to="/">Demo</RouterLink>
+        <RouterLink to="/about">Components demo</RouterLink>
+      </nav>
     </div>
   </header>
 
-  <!-- <RouterView /> -->
+  <div :class="flex_column">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  z-index: 10;
+}
+
+.nav-links {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  gap: 16px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 </style>
