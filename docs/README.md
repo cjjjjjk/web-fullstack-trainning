@@ -5,8 +5,15 @@
 - Git  
 - Git flow  
 
-**WEB basic** [notebook](../web-basic/docs.ipynb)  
+**WEB BASIC** [notebook](../web-basic/docs.ipynb)  
 - HTML 
 - JS, TS  
 - CSS, TAILWIND CSS, BOOTSTRAP  
-- NODEJS
+- NODEJS  
+
+**VUE3** [notebook](../vuejs/docs.ipynb)  
+- VueJS Setup
+- Attributes Binding, Event handling
+- Composition API   
+- Code organazation, lifecycle  
+- Pinia,...
