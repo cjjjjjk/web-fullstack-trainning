@@ -6,7 +6,7 @@ import CompB from "@/components/CompB.vue"
 
 // reactive state
 const myValue = ref<string>('')
-const show = ref<boolean>(false)
+const show = ref<boolean>(true)
 
 const myIcons = ['😕', '🫤', '👌', '😑', '😊'] as const
 

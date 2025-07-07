@@ -37,7 +37,7 @@ function save() {
         const interval = setInterval(() => {
             countdown.value--
             if (countdown.value > 0) {
-                errorMsg.value = `Đăng nhập thành công, chuyển hướng trong ${countdown.value}s`
+                errorMsg.value = `Thành công, chuyển hướng trong ${countdown.value}s`
             } else {
                 clearInterval(interval)
                 router.push('/profile')
