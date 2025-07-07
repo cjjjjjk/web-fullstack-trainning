@@ -52,14 +52,11 @@ function handleIconClick(icon: string) {
 
 <template>
   <main class="flex flex-row gap-10 p-4">
-    <!-- Left panel -->
-    <div class="p-4 bg-gray-50 border border-gray-100 flex flex-col gap-4">
-      <!-- Icon click feedback -->
+    <div class="left-panel p-4 bg-gray-50 border border-gray-100 flex flex-col gap-4">
       <div class="fixed top-12 left-4 text-lg font-semibold text-blue-600" v-if="clickedIcon !== ''">
         {{ `You just clicked: ${clickedIcon}` }}
       </div>
 
-      <!-- Icon buttons -->
       <div>
         <span class="hover:cursor-pointer hover:text-2xl transition-all duration-300 text-xl mx-1"
           v-for="(icon, index) in myIcons" :key="index" @click="handleIconClick(icon)">
@@ -69,12 +66,10 @@ function handleIconClick(icon: string) {
 
 
 
-      <!-- Text response -->
       <span :class="myclass">
         {{ myValue ? `${myValue} tuổi lận 😕` : "This is home content!" }}
       </span>
 
-      <!-- Conditional content -->
       <span v-if="numberValue > 150">Không có người nào lớn hơn 1000 tuổi</span>
       <span v-else-if="numberValue > 50">Hơn 50 tuổi, chào bác</span>
       <span v-else-if="myValue !== ''">Chào anh bạn</span>
@@ -102,8 +97,7 @@ function handleIconClick(icon: string) {
       </div>
     </div>
 
-    <!-- Right panel -->
-    <div class="flex flex-col gap-4">
+    <div class="right-panel flex flex-col gap-4">
       <button class="px-4 py-2 bg-blue-500 text-white rounded" @click="show = !show">
         Toggle Danh sách học sinh
       </button>
@@ -112,7 +106,7 @@ function handleIconClick(icon: string) {
         <div v-if="show">
           <label class="text-lg font-semibold mb-2 block">Danh sách học sinh:</label>
           <div class="flex flex-col gap-3">
-            <div v-for="student in myStudents.slice(0, 5)" :key="student.mssv"
+            <div v-for="student in myStudents.slice(0, 7)" :key="student.mssv"
               class="bg-gray-100 p-3 rounded-xl shadow-sm">
               <span class="font-bold">{{ student.name }}</span><br />
               <span>{{ student.mssv }}</span>
@@ -125,6 +119,13 @@ function handleIconClick(icon: string) {
 </template>
 
 <style scoped>
+.left-panel,
+.right-panel {
+  min-width: 25rem !important;
+  max-width: 40vw !important;
+  height: 80vh;
+}
+
 /* Transition component class */
 .fade-enter-active,
 .fade-leave-active {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,11 +13,30 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      // Lazy loading 
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: () => import('../views/ProfileView.vue'),
+      beforeEnter: (to, from) => {
+        const uid = localStorage.getItem('uid');
+        console.log(uid)
+        if (uid != null) return true;
+        else {
+          alert("Chưa đăng nhập, chuyển hướng đang nhập")
+          return {
+            path: 'login'
+          }
+        };
+      }
+    },
+    {
+      path: '/login',
+      name: "Login",
+      component: LoginView
+    }
   ],
 })
 

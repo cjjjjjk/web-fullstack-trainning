@@ -12,6 +12,8 @@ const flex_column = ref('flex flex-column')
       <nav class="nav-links">
         <RouterLink to="/">Demo</RouterLink>
         <RouterLink to="/about">Components demo</RouterLink>
+        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
       </nav>
     </div>
   </header>
