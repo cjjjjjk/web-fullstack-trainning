@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import * as avatars from "./avatars.json"
 
 import * as fs from 'fs'
 import * as path from 'path'
@@ -84,33 +85,11 @@ export class UserService {
 
         fs.writeFileSync(this.filePath, JSON.stringify(userList, null, 2), 'utf-8');
 
-        return `User "${name}" deleted successfully`;
+        return `User "${name}" deleted`;
     }
 
 
     getRandomProfileThumbnail(): string {
-        const randomProfileImages = [
-            "https://randomuser.me/api/portraits/men/90.jpg",
-            "https://randomuser.me/api/portraits/men/0.jpg",
-            "https://randomuser.me/api/portraits/men/35.jpg",
-            "https://randomuser.me/api/portraits/men/68.jpg",
-            "https://randomuser.me/api/portraits/men/75.jpg",
-            "https://randomuser.me/api/portraits/men/46.jpg",
-            "https://randomuser.me/api/portraits/men/56.jpg",
-            "https://randomuser.me/api/portraits/men/34.jpg",
-            "https://randomuser.me/api/portraits/men/63.jpg",
-            "https://randomuser.me/api/portraits/men/88.jpg",
-            "https://randomuser.me/api/portraits/women/2.jpg",
-            "https://randomuser.me/api/portraits/women/56.jpg",
-            "https://randomuser.me/api/portraits/women/23.jpg",
-            "https://randomuser.me/api/portraits/women/1.jpg",
-            "https://randomuser.me/api/portraits/women/67.jpg",
-            "https://randomuser.me/api/portraits/women/68.jpg",
-            "https://randomuser.me/api/portraits/women/94.jpg",
-            "https://randomuser.me/api/portraits/women/8.jpg",
-            "https://randomuser.me/api/portraits/women/50.jpg"
-        ]
-        const randomImage: string = randomProfileImages[Math.floor(Math.random() * randomProfileImages.length)]
-        return randomImage;
+        return avatars[Math.floor(Math.random() * avatars.length)];
     }
 }
