@@ -7,6 +7,7 @@ import { Logger2MiddleWare, LoggerMiddleware } from './logger/logger.middleware'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { databaseProvider } from './database/database';
 
 
 @Module({
@@ -14,19 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: config.get<string>('DB_USERNAME'),
-        password: config.get<string>('DB_PASSWORD'),
-        database: 'nestdb',
-        entities: [User],
-        synchronize: true,
-      }),
-    }),
+    TypeOrmModule.forRootAsync(databaseProvider),
     UserModule],
   controllers: [AppController],
   providers: [AppService],
