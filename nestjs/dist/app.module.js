@@ -11,7 +11,12 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const user_module_1 = require("./user/user.module");
+const logger_middleware_1 = require("./logger/logger.middleware");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(logger_middleware_1.LoggerMiddleware).forRoutes("user");
+        consumer.apply(logger_middleware_1.Logger2MiddleWare).forRoutes({ path: "user", method: common_1.RequestMethod.GET }, { path: "user", method: common_1.RequestMethod.POST }, { path: "user", method: common_1.RequestMethod.PATCH });
+    }
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([

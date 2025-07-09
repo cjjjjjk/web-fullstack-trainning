@@ -17,3 +17,11 @@
 - Composition API   
 - Code organazation, lifecycle  
 - Pinia,...
+
+**NEST** [notebook](../nestjs/docs.ipynb)  
+- Nest Setup
+- Route, Middlware,...
+- Authentication, Authorization,..
+- Database,..
+- Code organazation, lifecycle  
+- Exception handling
