@@ -7,8 +7,16 @@ import * as path from 'path'
 import { UserSchema } from './user.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class UserService {
+
+    constructor(
+        @InjectRepository(User)
+        private userRepo: Repository<User>,
+    ) { }
 
     private readonly filePath = path.join(__dirname, 'user.json')
 
@@ -38,12 +46,17 @@ export class UserService {
     }
 
     createNewUser(createUserDto: CreateUserDto): UserSchema | "error" {
-        const rawData = fs.readFileSync(this.filePath, 'utf-8');
-        const userList: UserSchema[] = JSON.parse(rawData);
+        // json file data : test --------------------------------------
+        // const rawData = fs.readFileSync(this.filePath, 'utf-8');
+        // const userList: UserSchema[] = JSON.parse(rawData);
+        // ------------------------------------------------------------
         try {
 
-            userList.push(createUserDto);
-            fs.writeFileSync(this.filePath, JSON.stringify(userList, null, 2), 'utf8');
+            // userList.push(createUserDto);
+
+            // typeORM
+            this.userRepo.save(createUserDto)
+            // fs.writeFileSync(this.filePath, JSON.stringify(userList, null, 2), 'utf8');
         } catch (err: any) {
             return "error"
         }
