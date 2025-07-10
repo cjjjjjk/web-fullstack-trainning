@@ -7,7 +7,7 @@ import { Logger2MiddleWare, LoggerMiddleware } from './logger/logger.middleware'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { databaseProvider } from './database/database';
+import { databaseProvider } from './database/database.provider';
 
 
 @Module({

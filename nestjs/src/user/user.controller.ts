@@ -1,26 +1,27 @@
 import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserSchema } from './user.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) { }
     @Post()
-    create(@Body() createUserDto: CreateUserDto) {
-        const res: UserSchema | "error" = this.userService.createNewUser(createUserDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+        const res = await this.userService.createNewUser(createUserDto);
         return res
     }
 
-    @Get('get-by-name')
-    getUserByName(@Query('name') name: string): UserSchema {
-        return this.userService.getUserByName(name);
+    @Get('find-by-name')
+    async getUserByName(@Query('name') name: string): Promise<User | { err: string }> {
+        return await this.userService.getUserByName(name);
     }
 
+
     @Get('all')
-    getAllUser(): UserSchema[] {
-        return this.userService.getAllUser();
+    async getAllUser(): Promise<any> {
+        return await this.userService.getAllUser();
     }
 
 
@@ -30,12 +31,12 @@ export class UserController {
     }
 
     @Patch("update")
-    updateUserInfo(@Body() updateinfo: UpdateUserDto) {
+    async updateUserInfo(@Body() updateinfo: UpdateUserDto) {
         return this.userService.updateUserInfo(updateinfo)
     }
 
     @Delete("delete")
-    deleteUserByName(@Query('name') name: string) {
-        return this.userService.deleteUserByName(name);
+    async deleteUserByName(@Query('name') name: string): Promise<any> {
+        return await this.userService.deleteUserByName(name);
     }
 }
