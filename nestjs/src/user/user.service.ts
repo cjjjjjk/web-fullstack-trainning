@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as avatars from "./avatars.json"
 
@@ -10,7 +10,27 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
-export class UserService {
+export class UserService implements OnApplicationBootstrap, OnApplicationShutdown, OnModuleInit {
+
+    /*
+        User module on init ... # User module khỏi tạo hoàn toàn xong trước app. app phải chờ user khởi tạo xong.
+        Application bootstrap init...
+        User service on application bootstrap ...
+    */
+    onApplicationBootstrap() {
+        console.log("User service on application bootstrap ...")
+    }
+    onModuleInit() {
+        console.log("User module on init ...")
+    }
+    afterInit() { // hook gateway lifecycle, thuộc về gateway
+        console.log("User service after init ...")
+    }
+
+
+    onApplicationShutdown(signal?: string) {
+        console.log("Application shutdown", signal)
+    }
 
     constructor(
         @InjectRepository(User)
@@ -54,6 +74,7 @@ export class UserService {
         return createUserDto
     }
 
+
     async updateUserInfo(updateinfo: UpdateUserDto): Promise<string> {
         const update_status = await this.userRepo.update(
             { name: updateinfo.name }, // Where conditional
@@ -75,4 +96,13 @@ export class UserService {
     getRandomProfileThumbnail(): string {
         return avatars[Math.floor(Math.random() * avatars.length)];
     }
+
+
+    // For authentication
+    async findUserByPhone(phone: string): Promise<User | null> {
+        const user: User | null = await this.userRepo.findOneBy({ phone: phone });
+        return user
+    }
 }
+
+

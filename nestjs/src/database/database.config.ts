@@ -9,6 +9,5 @@ export const databaseConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [User],
-    migrations: ['src/database/migrations/*.ts'],
     synchronize: false,
 };

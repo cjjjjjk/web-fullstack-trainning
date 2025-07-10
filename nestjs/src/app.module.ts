@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseProvider } from './database/database.provider';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -16,7 +17,7 @@ import { databaseProvider } from './database/database.provider';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(databaseProvider),
-    UserModule],
+    UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
