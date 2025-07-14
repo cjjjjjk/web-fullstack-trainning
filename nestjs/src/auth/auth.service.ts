@@ -28,14 +28,14 @@ export class AuthService {
             } else return false
         }
     }
-
     // Login thành công
     async login(user: any) {
-        console.log(user)
-        const payload = { sub: user.id, phone: user.phone }
+        // Destructure để loại bỏ password, giữ lại phần còn lại
+        const { password, ...payload } = user;
 
         return {
-            access_token: await this.jwtService.signAsync(payload)
-        }
+            access_token: await this.jwtService.signAsync(payload),
+        };
     }
+
 }

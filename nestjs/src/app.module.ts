@@ -9,6 +9,7 @@ import { User } from './user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseProvider } from './database/database.provider';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin-content/admin.module';
 
 
 @Module({
@@ -17,7 +18,7 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(databaseProvider),
-    UserModule, AuthModule],
+    UserModule, AuthModule, AdminModule],
   controllers: [AppController],
   providers: [AppService],
 })
