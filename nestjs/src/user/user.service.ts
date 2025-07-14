@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, OnApplicationBootstrap, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as avatars from "./avatars.json"
 
@@ -9,6 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CannotDelOther } from 'src/common/exceptions/not-owner.exception';
 @Injectable()
 export class UserService implements OnApplicationBootstrap, OnApplicationShutdown, OnModuleInit {
 
@@ -84,12 +85,24 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
         return update_status ? "Update complete" : "Update false"
     }
 
-    async deleteUserByName(name: string): Promise<string> {
-        const status = await this.userRepo.delete({ name })
+    async deleteUserByName(requestUserName: string, targetUserName: string): Promise<string> {
+        if (requestUserName !== targetUserName) {
+            throw new CannotDelOther();
+        }
 
-        console.log("delete status: ", status)
 
-        return `User "${name}" deleted`;
+        try {
+            const result = await this.userRepo.delete({ name: targetUserName });
+
+            if (result.affected === 0) {
+                // Nếu không có bản ghi nào bị xóa
+                throw new InternalServerErrorException(`User "${targetUserName}" not found or could not be deleted`);
+            }
+
+            return `User "${targetUserName}" deleted`;
+        } catch (error) {
+            throw new InternalServerErrorException('Error delete');
+        }
     }
 
 

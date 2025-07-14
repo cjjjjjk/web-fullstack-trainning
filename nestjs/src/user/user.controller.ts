@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Query, Req, UseGuards, Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
+import { JwtAuthGuard } from 'src/auth/passport/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -35,8 +36,13 @@ export class UserController {
         return this.userService.updateUserInfo(updateinfo)
     }
 
-    @Delete("delete")
-    async deleteUserByName(@Query('name') name: string): Promise<any> {
-        return await this.userService.deleteUserByName(name);
+    @UseGuards(JwtAuthGuard)
+    @Delete('delete')
+    async deleteUserByName(
+        @Query('name') name: string,
+        @Req() req: any,
+    ): Promise<any> {
+        const currentUser = req.user;
+        return await this.userService.deleteUserByName(currentUser.name, name);
     }
 }
