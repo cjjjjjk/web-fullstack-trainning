@@ -86,6 +86,7 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
     }
 
     async deleteUserByName(requestUserName: string, targetUserName: string): Promise<string> {
+        // Tự cấu hình exception: Không xoá đươc user khác.
         if (requestUserName !== targetUserName) {
             throw new CannotDelOther();
         }

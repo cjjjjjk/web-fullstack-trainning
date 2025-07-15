@@ -20,8 +20,8 @@
 
 **NEST** [notebook](../nestjs/docs.ipynb)  
 - Nest Setup
-- Route, Middlware,...
-- Authentication, Authorization,..
-- Database,..
-- Code organazation, lifecycle  
+- Route, Midleware,...
+- Code organazation, lifecycle
+- Database, migrations
+- Authentication, Authorization
 - Exception handling

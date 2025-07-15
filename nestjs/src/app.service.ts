@@ -7,6 +7,6 @@ export class AppService implements OnModuleInit {
   }
 
   getHello(): string {
-    return 'Welcome to nest api!';
+    return '[DEMO]: HELLO 🫤';
   }
 }
