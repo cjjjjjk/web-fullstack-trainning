@@ -25,3 +25,9 @@
 - Database, migrations
 - Authentication, Authorization
 - Exception handling
+
+**DOCKER** [notebook](../docker/docs.ipynb)  
+- Docker: image, container, volume, network 
+- Dockerfile
+- Docker compose
+- Docker network
