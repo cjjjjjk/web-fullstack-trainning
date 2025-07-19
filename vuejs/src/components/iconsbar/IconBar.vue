@@ -9,30 +9,20 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from 'vue'
 import Icon from './Icon.vue'
 
-export default {
-    name: 'IconBar',
-    components: {
-        Icon
-    },
-    data() {
-        return {
-            icons: ['🫤', '😕', '😁', '🤔', '😎', '😢', '😮', '😴', '😡'],
-            clickedIcon: "",
-        }
-    },
-    methods: {
-        handleClickIcon(icon: string) {
-            setTimeout(() => {
-                this.clickedIcon = ""
-            }, 3000);
-            return this.clickedIcon = icon;
-        }
-    }
+const icons = ['🫤', '😕', '😁', '🤔', '😎', '😢', '😮', '😴', '😡']
+const clickedIcon = ref("")
 
+function handleClickIcon(icon: string) {
+  clickedIcon.value = icon
+  setTimeout(() => {
+    clickedIcon.value = ""
+  }, 3000)
 }
 </script>
+
 
 <style scoped></style>
