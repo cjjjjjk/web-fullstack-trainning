@@ -11,9 +11,10 @@ const flex_column = ref('flex flex-column')
     <div class="wrapper">
       <nav class="nav-links">
         <RouterLink to="/">Demo</RouterLink>
-        <RouterLink to="/about">Components demo</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/about">Components</RouterLink>
+        <RouterLink to="/profile">CallAPI</RouterLink>
+        <RouterLink to="/login">Routing</RouterLink>
+        <RouterLink to="/auth">Nest Auth Demo</RouterLink>
       </nav>
     </div>
   </header>

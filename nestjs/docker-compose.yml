@@ -24,6 +24,7 @@ services:
     image: mysql:8
     restart: always
     environment:
+      CLIENT_URL: ${CLIENT_URL}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     ports:

@@ -3,9 +3,9 @@
         Component B
     </div>
 </template>
-<script>
+<script setup lang="ts">
 
 </script>
-<style lang="ts">
+<style>
 
 </style>

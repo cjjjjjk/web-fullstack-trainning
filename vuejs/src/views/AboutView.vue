@@ -4,15 +4,9 @@
   </div>
 </template>
 
-<script>
-import IconBar from '@/components/iconsbar/IconBar.vue'
+<script setup lang="ts">
+import IconBar from '../components/iconsbar/IconBar.vue'
 
-export default {
-  name: 'AboutView',
-  components: {
-    IconBar
-  }
-}
 </script>
 
 <style>

@@ -31,8 +31,8 @@
         </div>
         <div v-if="yesNoAnswer && !loading"
             class="h-100 w-xl bg-white shadow-xl rounded-2xl p-8 max-w-md flex flex-col items-center gap-6">
-            <span>Is {{ profile.gender =="male" ? "he":"she" }} like you ?</span>
-            <span><strong class="font-bold"  >{{ yesNoAnswer.answer.toUpperCase() }}</strong></span>
+            <span>Is {{ profile.gender == "male" ? "he" : "she" }} like you ?</span>
+            <span><strong class="font-bold">{{ yesNoAnswer.answer.toUpperCase() }}</strong></span>
             <img :src="yesNoAnswer.image" alt="">
         </div>
     </div>
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '../../stores/userStore';
+import { useUserStore } from '../stores/userStore';
 import axios from 'axios'
 
 /* state & router */
@@ -64,11 +64,11 @@ async function getData() {
                 profile.fetchProfile(),
                 // axios.get('https://randomuser.me/api/'),
                 axios.get('https://yesno.wtf/api')
-        ])
+            ])
         // profile.value = profileRes.data.results[0];
-        yesNoAnswer.value  = yesNoRes.data;
-    } catch(err: unknown) {
-        const erorr = err as {message ?: string };
+        yesNoAnswer.value = yesNoRes.data;
+    } catch (err: unknown) {
+        const erorr = err as { message?: string };
         error.value = erorr.message ?? "Loix"
     } finally {
         loading.value = false
@@ -107,7 +107,7 @@ onMounted(async () => {
     // await getRandomProfile()
     // await getYesNo()
     await getData();
-    
+
 })
 
 /* methods */

@@ -45,4 +45,11 @@ export class UserController {
         const currentUser = req.user;
         return await this.userService.deleteUserByName(currentUser.name, name);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('me')
+    getMe(@Req() req: any) {
+        return req.user;
+    }
+
 }

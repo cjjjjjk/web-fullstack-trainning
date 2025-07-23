@@ -62,18 +62,33 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
     }
 
     async createNewUser(createUserDto: CreateUserDto): Promise<any> {
-        // json file data : test --------------------------------------
-        // const rawData = fs.readFileSync(this.filePath, 'utf-8');
-        // const userList: UserSchema[] = JSON.parse(rawData);
-        // ------------------------------------------------------------
-
         try {
-            await this.userRepo.save(createUserDto)
-        } catch (err: any) {
-            return err
+            const isExistPhone = await this.userRepo.findOne({
+                where: { phone: createUserDto.phone }
+            });
+
+            if (isExistPhone) {
+                return {
+                    isSuccess: false,
+                    message: 'phone existed'
+                };
+            }
+
+            const newUser = await this.userRepo.save(createUserDto);
+
+            return {
+                isSuccess: true,
+                data: newUser
+            };
+        } catch (error) {
+            return {
+                isSuccess: false,
+                message: 'Internal server error',
+                error: error.message || error
+            };
         }
-        return createUserDto
     }
+
 
 
     async updateUserInfo(updateinfo: UpdateUserDto): Promise<string> {

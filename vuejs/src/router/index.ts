@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory, type Router } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
+import LoginView from '../views/LoginView.vue'
+import AuthDemoView from '../views/AuthDemoView.vue';
+
+import AboutView from '../views/AboutView.vue';
 
 const router: Router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/'),
   routes: [
     {
       path: '/',
@@ -14,7 +17,7 @@ const router: Router = createRouter({
       path: '/about',
       name: 'about',
       // Lazy loading 
-      component: () => import('../views/AboutView.vue'),
+      component: AboutView,
     },
     {
       path: "/profile",
@@ -36,6 +39,11 @@ const router: Router = createRouter({
       path: '/login',
       name: "Login",
       component: LoginView
+    },
+    {
+      path: '/auth',
+      name: "Auth Demo",
+      component: AuthDemoView
     }
   ],
 })
