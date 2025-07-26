@@ -15,7 +15,7 @@ export const onLoginAuthAPI = async function (loginDto: LoginDTO) {
         console.log(err)
         return {
             isSuccess: false,
-            message: 'Đăng nhập thất bại'
+            message: err.message
         }
     }
 }

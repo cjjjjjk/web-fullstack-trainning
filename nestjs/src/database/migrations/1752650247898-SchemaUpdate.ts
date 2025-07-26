@@ -12,5 +12,4 @@ export class SchemaUpdate1752650247898 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE \`user\``);
         await queryRunner.query(`DROP TABLE \`admin_content\``);
     }
-
 }

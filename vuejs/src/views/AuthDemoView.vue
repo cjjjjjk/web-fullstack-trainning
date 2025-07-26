@@ -44,14 +44,16 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input v-model="name" type="text" id="name"
                         class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your name" required />
+                        placeholder="Enter your name" required @input="validateName" />
                     <p v-if="nameError" class="text-red-500 text-sm mt-1">{{ nameError }}</p>
                 </div>
                 <div class="mb-4">
                     <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                     <input v-model="address" type="text" id="address"
                         class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your address" required />
+                        placeholder="Enter your address" required 
+                        @input="validateAddress"
+                        />
                     <p v-if="addressError" class="text-red-500 text-sm mt-1">{{ addressError }}</p>
                 </div>
                 <div class="mb-4">
@@ -69,8 +71,9 @@
                     <p v-if="passwordErrorSignUp" class="text-red-500 text-sm mt-1">{{ passwordErrorSignUp }}</p>
                 </div>
                 <button type="submit"
+                    :disabled="!isSignUpFormValid"
                     @click="handlerSignUpSubmit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple"
+                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple disabled:bg-gray-400"
                     >
                     Sign up
                 </button>
@@ -118,10 +121,13 @@
                     <span class="font-bold"
                         :class="adminContent.status == 200 ? 'text-green-600' : 'text-red-600' "
                     >{{ adminContent.title ?? "Trạng thái ..." }}</span>
-                    <span>{{ `Content ID: ${adminContent.id}` }}</span>
+                    <span
+                        v-if="adminContent.status == 200"
+                    >{{ `Content ID: ${adminContent.id}` }}</span>
                     <span>{{ adminContent.content }}</span>
                 </div>
                 <button 
+                    v-if="!adminContent"
                     @click="handleGetAdminContent"
                     class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple">
                     Get Admin Content
@@ -180,10 +186,24 @@ const validatePhone = (isClear?: boolean) => {
     }
 }
 const validateName= () =>{ 
+    if(!name.value) {
+        nameError.value = "Name is require !"
+        return
+    } 
 
+    if(name.value.length < 3) {
+        nameError.value = "too short !"
+        return
+    }
+    
+    nameError.value = ""
 }
 const validateAddress= ()=> {
-
+    if(!address.value) {
+        addressError.value = 'address require !'
+        return
+    }
+    addressError.value = ""
 }
 
 const validatePassword = (isClear?: boolean) => {
@@ -207,6 +227,11 @@ const isFormValid = computed(() => {
     return phone.value && password.value && !phoneError.value && !passwordError.value
 })
 
+const isSignUpFormValid = computed(()=>{
+    const rs:boolean = Boolean(name.value && address.value && !nameError.value && !addressError.value && phoneSignUp.value && passwordSignUp.value)
+    return rs
+})
+
 const handleSubmit = async () => {
     validatePhone()
     validatePassword()
@@ -221,7 +246,7 @@ const handleSubmit = async () => {
     try {
         const response = await onLoginAuthAPI(loginDto)
         if(response.isSuccess == false) {
-            alert('Đăng nhập thất bại');
+            alert(`Đăng nhập thất bại ${response.message}`);
             phone.value = '';
             password.value = ''
             return
@@ -296,6 +321,7 @@ const handleSignUp = ()=> {
 }
 
 const handlerSignUpSubmit = async ()=> {
+
     const newUser: createUserDto = {
         name: name.value.trim(),
         phone: phoneSignUp.value.trim(),
@@ -304,13 +330,13 @@ const handlerSignUpSubmit = async ()=> {
     }
 
     const resData = await onCreateNewUser(newUser);
-    if(resData.isSuccess == false) {
-        alert('Tạo tài khoản thất bại')
-    }
-    else {
+    if(resData.isSuccess == true) {
         alert('Tạo tài khoàn thành công')
         isSignUp.value = false;
         phone.value = newUser.phone;
+    }
+    else {
+        alert(`Tạo tài khoản thất bại, ${resData.message}`)
     }
 }
 
@@ -319,16 +345,6 @@ onMounted(()=>{
     getUserData()
 })
 </script>
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- STYLE  -->

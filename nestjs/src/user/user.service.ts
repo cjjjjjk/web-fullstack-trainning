@@ -74,6 +74,7 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
                 };
             }
 
+
             const newUser = await this.userRepo.save(createUserDto);
 
             return {
