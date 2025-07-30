@@ -84,7 +84,7 @@
         class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-2"
         >
             <!-- [Design AI gen] -->
-            <div v-if="userInfor" class="relative p-6 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md mx-auto">
+            <div v-if="userInfor" class="relative p-6 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md">
             <!-- Top Section: Name and Role -->
             <div class="flex items-center justify-between mb-4">
             <h2 class="text-2xl font-semibold text-gray-900">{{ userInfor.name }}</h2>
@@ -146,7 +146,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { onLoginAuthAPI,LoginDTO, onGetAdminContent, onGetMe, createUserDto, onCreateNewUser, onDelete } from '../services/demoNestAPI'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 // login status with default value
 const isLogin = ref(localStorage.getItem('access_token') !== null)
 const isSignUp = ref(false)
@@ -256,6 +259,12 @@ const handleSubmit = async () => {
             localStorage.setItem('access_token', response.access_token)
             userInfor.value = response.user
             isLogin.value = true
+            
+            const redirectPath = route.query.redirect as string | undefined
+            console.log("OKE",redirectPath)
+            if (redirectPath) {
+                router.push(redirectPath)
+            }
         }
     } catch (err: any) {
         console.error('Login error:', err)

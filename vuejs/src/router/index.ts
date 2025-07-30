@@ -4,12 +4,17 @@ import LoginView from '../views/LoginView.vue'
 import AuthDemoView from '../views/AuthDemoView.vue';
 
 import AboutView from '../views/AboutView.vue';
+import DemoView from '../views/DemoView.vue';
 
 const router: Router = createRouter({
   history: createWebHistory('/'),
   routes: [
     {
       path: '/',
+      redirect: 'student_management'
+    },
+    {
+      path: '/home',
       name: 'home',
       component: HomeView,
     },
@@ -44,6 +49,12 @@ const router: Router = createRouter({
       path: '/auth',
       name: "Auth Demo",
       component: AuthDemoView
+    },
+    {
+      path: '/student_management',
+      name: 'Final Demo',
+      component: DemoView,
+      meta: { requiresAuth: true, redirectAfterLogin: true }
     }
   ],
 })

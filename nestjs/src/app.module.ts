@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseProvider } from './database/database.provider';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin-content/admin.module';
+import { StudentModule } from './student/student.module';
 
 
 @Module({
@@ -18,7 +19,7 @@ import { AdminModule } from './admin-content/admin.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(databaseProvider),
-    UserModule, AuthModule, AdminModule],
+    UserModule, AuthModule, AdminModule, StudentModule],
   controllers: [AppController],
   providers: [AppService],
 })
