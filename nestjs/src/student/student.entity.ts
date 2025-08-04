@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Class } from '../class/class.entity';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 @Unique(['mssv'])
@@ -17,4 +18,7 @@ export class Student {
 
     @Column()
     email: string
+
+    @ManyToOne(() => Class, (cls) => cls.students, { eager: true })
+    class: Class; // -> classID trong mysql
 }

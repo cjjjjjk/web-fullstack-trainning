@@ -4,14 +4,15 @@ import LoginView from '../views/LoginView.vue'
 import AuthDemoView from '../views/AuthDemoView.vue';
 
 import AboutView from '../views/AboutView.vue';
-import DemoView from '../views/DemoView.vue';
+import StudentView from '../views/StudentView.vue';
+import ClassView from '../views/ClassView.vue';
 
 const router: Router = createRouter({
   history: createWebHistory('/'),
   routes: [
     {
       path: '/',
-      redirect: 'student_management'
+      redirect: 'students'
     },
     {
       path: '/home',
@@ -51,9 +52,15 @@ const router: Router = createRouter({
       component: AuthDemoView
     },
     {
-      path: '/student_management',
+      path: '/students',
       name: 'Final Demo',
-      component: DemoView,
+      component: StudentView,
+      meta: { requiresAuth: true, redirectAfterLogin: true }
+    },
+    {
+      path: '/class',
+      name: 'Class',
+      component: ClassView,
       meta: { requiresAuth: true, redirectAfterLogin: true }
     }
   ],

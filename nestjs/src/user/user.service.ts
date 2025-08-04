@@ -6,7 +6,7 @@ import * as avatars from "./avatars.json"
 // import * as path from 'path'
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CannotDelOther } from 'src/common/exceptions/not-owner.exception';
@@ -61,19 +61,32 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
         }
     }
 
+
     async createNewUser(createUserDto: CreateUserDto): Promise<any> {
+        const fieldErrors: Record<string, string> = {};
+
         try {
             const isExistPhone = await this.userRepo.findOne({
                 where: { phone: createUserDto.phone }
             });
-
             if (isExistPhone) {
-                return {
-                    isSuccess: false,
-                    message: 'phone existed'
-                };
+                fieldErrors['phone'] = 'Phone number already exists';
             }
 
+            if (!createUserDto.name || createUserDto.name.trim().length < 2) {
+                fieldErrors['name'] = 'Name is too short';
+            }
+            if (!createUserDto.password || createUserDto.password.length < 3) {
+                fieldErrors['password'] = 'Password must be at least 3 characters';
+            }
+
+            if (Object.keys(fieldErrors).length > 0) {
+                return {
+                    isSuccess: false,
+                    fieldErrors,
+                    message: 'Validation error'
+                };
+            }
 
             const newUser = await this.userRepo.save(createUserDto);
 
@@ -81,7 +94,24 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
                 isSuccess: true,
                 data: newUser
             };
+
         } catch (error) {
+            if (error instanceof QueryFailedError) {
+                const driverError = (error as any).driverError;
+                if (driverError.code === '23505') {
+                    // UNIQUE constraint error (PostgreSQL)
+                    const detail = driverError.detail;
+                    if (detail.includes('phone')) {
+                        fieldErrors['phone'] = 'Phone number must be unique';
+                    }
+                    return {
+                        isSuccess: false,
+                        fieldErrors,
+                        message: 'Duplicate entry'
+                    };
+                }
+            }
+
             return {
                 isSuccess: false,
                 message: 'Internal server error',
@@ -89,6 +119,7 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
             };
         }
     }
+
 
 
 

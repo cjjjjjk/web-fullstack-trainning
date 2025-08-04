@@ -1,6 +1,6 @@
 <template>
   <div class="fixed inset-0 bg-gray-500/30 flex items-center justify-center z-50">
-    <div class="bg-white rounded-xl shadow-lg w-[40rem] p-8 relative top-[-10rem]">
+    <div class="bg-white rounded-xl shadow-lg w-[40rem] p-8 relative top-[-6rem]">
       <h2 class="text-xl font-bold mb-6">
         {{ type === 'add' ? 'New Student' : 'Edit Student' }}
       </h2>
@@ -17,16 +17,37 @@
             :disabled="type == 'edit'"/>
             <span class="text-red-500">{{ fieldsErrMes.mssv }}</span>
         </div>
+        <div>
+          <label class="block font-medium mb-1">Class {{ form.class?.name }}</label>
+          <select
+            v-model="form.class"
+            class="select w-full border border-gray-300 rounded-xl px-3 py-2 disabled:bg-gray-200/80"
+            @change="validateClass"
+          >
+              <option :value="null" disabled selected>
+                {{ form.class ? form.class.name : 'N/A' }}
+              </option>
+            <option
+              v-for="item in allClasses"
+              :key="item.code"
+              :value="item"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+          <span class="text-red-500">{{ fieldsErrMes.class }}</span>
+        </div>
 
         <div>
           <label class="block font-medium mb-1">Name</label>
           <input v-model="form.name" type="text" class="w-full border border-gray-300 rounded-xl px-3 py-2" @input="validateName"/>
           <span class="text-red-500">{{ fieldsErrMes.name }}</span>
         </div>
-
+        
         <div>
           <label class="block font-medium mb-1">Address</label>
           <input v-model="form.address" type="text" class="w-full border border-gray-300 rounded-xl px-3 py-2" />
+          <span class="text-red-500">{{ fieldsErrMes.address }}</span>
         </div>
 
         <div>
@@ -65,9 +86,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { createStudent, deleteStudent, StudentEntity, updateStudent } from '../services/studentService'
-
+import { ClassEntity, getAllClassAPI } from '../services/classService';
 
 const props = defineProps<{
   type: 'add' | 'edit'
@@ -84,21 +105,39 @@ const emitClose = () => emit('close')
 const form = reactive<StudentEntity>({
   name: props.data?.name ?? '',
   mssv: props.data?.mssv ?? '',
+  class: props.data?.class ?? null,
   address: props.data?.address ?? '',
   email: props.data?.email ?? '',
 })
 
+// datas
+const allClasses = ref<ClassEntity[]>([])
+
+
 // validations
 const canSubmit = computed<boolean>(() => {
-  const hasError = Object.values(fieldsErrMes).some(mes => mes.trim() !== '');
-  const isEmptyForm = Object.values(form).every(val => val.trim() === '');
+  const hasError = Object.entries(fieldsErrMes).some(([key, val]) => {
+    if (key === 'class') {
+      return false
+    }
+    return typeof val === 'string' && val.trim() !== '';
+  });
+
+  const isEmptyForm = Object.entries(form).every(([key, val]) => {
+    if (key === 'class') {
+      false
+    }
+    return typeof val === 'string' && val.trim() === '';
+  });
 
   return !hasError && !isEmptyForm;
 });
 
+
 const fieldsErrMes = reactive<StudentEntity>({
   name: "", 
   mssv: "",
+  class: null,
   address: "",
   email: ""
 })
@@ -108,6 +147,10 @@ const validateName = ()=>{
     return
   }
   fieldsErrMes.name = ''
+}
+
+const validateClass = ()=> {
+
 }
 const validatemssv = ()=>{
   if(!form.mssv) {
@@ -146,6 +189,7 @@ const handleSave =async function () {
     if(props.type == 'edit'){
     // edit student
         try {
+          console.log(form)
             const res = await updateStudent(form.mssv, form)
             if(res.isSuccess == true) {
                 // getStudents()
@@ -193,6 +237,18 @@ const submitForm = () => {
     handleSave()
   }
 }
+
+
+const getAllClasses = async ()=> {
+  const res = await getAllClassAPI()
+  if(res.isSuccess) {
+    allClasses.value = res.classes ?? [];
+    console.log(allClasses.value)
+  }
+}
+onMounted(async ()=>{
+  await getAllClasses()
+})
 
 
 </script>

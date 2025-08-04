@@ -4,6 +4,7 @@ import { CreateStudentDto, UpdateStudentDto } from './student.dto';
 import { JwtAuthGuard } from 'src/auth/passport/jwt-auth.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Class } from 'src/class/class.entity';
 
 @Controller('student')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -19,7 +20,7 @@ export class StudentController {
 
     @Get('all')
     getAll(@Query('page') page: number, @Query('limit') limit: number) {
-        return this.studentService.getAllStudent({ page, limit });
+        return this.studentService.filterStudents({}, { page, limit });
     }
 
 
@@ -45,12 +46,13 @@ export class StudentController {
         @Query('mssv') mssv?: string,
         @Query('address') address?: string,
         @Query('email') email?: string,
+        @Query('classId') classId?: string,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
-        @Query('sortField') sortField: 'name' | 'mssv' | 'address' | 'email' = 'name',
+        @Query('sortField') sortField: 'name' | 'mssv' | 'class' | 'address' | 'email' = 'name',
         @Query('sortType') sortType: 'asc' | 'desc' = 'asc'
     ): Promise<any> {
-        const filters = { name, mssv, address, email };
+        const filters = { name, mssv, classId, address, email };
         return await this.studentService.filterStudents(filters, { page, limit }, { sortField, sortType });
     }
 

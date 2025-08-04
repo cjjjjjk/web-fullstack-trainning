@@ -1,10 +1,12 @@
 import { baseNESTDemoAPI } from "./baseDemoAPI";
+import { ClassEntity } from "./classService";
 
 export interface StudentEntity {
     name: string;
     mssv: string;
     address: string;
     email: string;
+    class: ClassEntity | null
 }
 
 export interface PaginationConfig {
@@ -125,29 +127,37 @@ export const deleteStudent = async function (mssv: string) {
 export const filterStudents = async function (
     filters: Partial<StudentEntity>,
     pagination: PaginationConfig,
-    soft: SortConfig
+    sort: SortConfig
 ) {
-    const token = localStorage.getItem('access_token')
-    if (!token) return {
-        isSuccess: false,
-        message: "token require !"
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        return {
+            isSuccess: false,
+            message: "token required!"
+        };
     }
+
+    const { class: classObj, ...restFilters } = filters;
+    const queryParams = {
+        ...restFilters,
+        ...(classObj?.id ? { classId: classObj.id } : {}),
+        ...pagination,
+        ...sort
+    };
 
     try {
         const res = await baseNESTDemoAPI.get('/student', {
-            params: {
-                ...filters,
-                ...pagination,
-                ...soft
-            },
+            params: queryParams,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+
         if (res.data) {
             return res.data;
         }
     } catch (error) {
-        console.error('filter students er:', error);
+        console.error('filter students error:', error);
     }
 };
+

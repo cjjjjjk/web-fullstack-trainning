@@ -1,6 +1,7 @@
 import { Student } from '../student/student.entity';
 import { AdminContent } from '../admin-content/admin-content.entity';
 import { User } from '../user/user.entity';
+import { Class } from '../class/class.entity';
 import 'dotenv/config';
 
 export const databaseConfig = {
@@ -10,6 +11,6 @@ export const databaseConfig = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [User, AdminContent, Student],
+    entities: [User, AdminContent, Student, Class],
     synchronize: false,
 };

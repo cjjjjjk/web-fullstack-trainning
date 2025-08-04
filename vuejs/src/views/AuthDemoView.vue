@@ -1,6 +1,7 @@
 <!-- src/views/AuthDemoView.vue -->
 <template>
-    <div class="fixed top-0 left-0 min-h-screen w-screen flex gap-3 items-center justify-center bg-gray-100">
+    <div class="fixed top-0 left-0 min-h-screen w-screen flex gap-3 items-center justify-center">
+        <Transition name="up">
         <div 
             v-if="!isLogin"
             class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -35,7 +36,11 @@
                 >sign up ?</span>
             </form>
         </div>
-        <div 
+        </Transition>
+
+        <Transition 
+            name="move">
+            <div
             v-if="isSignUp"
             class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Sign up</h2>
@@ -71,14 +76,18 @@
                     <p v-if="passwordErrorSignUp" class="text-red-500 text-sm mt-1">{{ passwordErrorSignUp }}</p>
                 </div>
                 <button type="submit"
-                    :disabled="!isSignUpFormValid"
+                    :disabled="!isSignUpFormValid || isSignUpLoading"
                     @click="handlerSignUpSubmit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple disabled:bg-gray-400"
+                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple disabled:bg-gray-400 btn"
                     >
+                     <span v-if="isSignUpLoading" class="loading loading-spinner"></span>
                     Sign up
                 </button>
             </form>
-        </div>
+            </div>
+        </Transition>
+        <Transition name="movein">
+
         <div 
         v-if="isLogin"
         class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-2"
@@ -126,12 +135,12 @@
                     >{{ `Content ID: ${adminContent.id}` }}</span>
                     <span>{{ adminContent.content }}</span>
                 </div>
-                <button 
+                <!-- <button 
                     v-if="!adminContent"
                     @click="handleGetAdminContent"
                     class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple">
                     Get Admin Content
-                </button>
+                </button> -->
                 <button 
                     @click="handleLogout"
                     class="w-full text-red-600 py-2 rounded-md hover:underline hover:cursor-pointer transition duration-200 relative overflow-hidden ripple"
@@ -140,6 +149,7 @@
                 </button>
 
         </div>
+        </Transition>
     </div>
 </template>
 
@@ -329,25 +339,46 @@ const handleSignUp = ()=> {
     isSignUp.value = !isSignUp.value;
 }
 
-const handlerSignUpSubmit = async ()=> {
+const isSignUpLoading = ref<boolean>(false)
+const handlerSignUpSubmit = async () => {
+    isSignUpLoading.value = true
+    // Reset all error messages
+    nameError.value = ''
+    phoneErrorSignUp.value = ''
+    passwordErrorSignUp.value = ''
 
     const newUser: createUserDto = {
         name: name.value.trim(),
         phone: phoneSignUp.value.trim(),
-        address: address.value,
+        address: address.value.trim(),
         password: passwordSignUp.value
     }
 
-    const resData = await onCreateNewUser(newUser);
-    if(resData.isSuccess == true) {
-        alert('Tạo tài khoàn thành công')
-        isSignUp.value = false;
-        phone.value = newUser.phone;
+    const resData = await onCreateNewUser(newUser)
+
+    if (resData.isSuccess === true) {
+        alert('Tạo tài khoản thành công')
+        isSignUp.value = false
+        phone.value = newUser.phone
+    } else {
+        if (resData.fieldErrors) {
+            if (resData.fieldErrors.name) {
+                nameError.value = resData.fieldErrors.name
+            }
+            if (resData.fieldErrors.phone) {
+                phoneErrorSignUp.value = resData.fieldErrors.phone
+            }
+            if (resData.fieldErrors.password) {
+                passwordErrorSignUp.value = resData.fieldErrors.password
+            }
+
+        } else {
+            alert(`Tạo tài khoản thất bại: ${resData.message}`)
+        }
     }
-    else {
-        alert(`Tạo tài khoản thất bại, ${resData.message}`)
-    }
+    isSignUpLoading.value = false
 }
+
 
 onMounted(()=>{
     if(isLogin)
@@ -386,5 +417,36 @@ onMounted(()=>{
         transform: scale(4);
         opacity: 0;
     }
+}
+
+.move-enter-active,
+.move-leave-active {
+    transition:  all 0.4s ease-in-out;
+}
+
+.move-enter-from,
+.move-leave-to {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.up-enter-active,
+.up-leave-active {
+    transition:  all 0.4s ease-in-out;
+}
+
+.up-enter-from,
+.up-leave-to {
+    opacity: 0;
+    transform: translatey(10px);
+}
+.movein-enter-active {
+    transition:  all 0.4s ease-in-out;
+}
+
+.movein-enter-from,
+.movein-leave-to {
+    opacity: 0;
+    transform: translateX(10px);
 }
 </style>

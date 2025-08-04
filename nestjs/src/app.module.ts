@@ -5,12 +5,12 @@ import { UserModule } from './user/user.module';
 import { Logger2MiddleWare, LoggerMiddleware } from './logger/logger.middleware';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseProvider } from './database/database.provider';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin-content/admin.module';
 import { StudentModule } from './student/student.module';
+import { ClassModule } from './class/class.module';
 
 
 @Module({
@@ -19,7 +19,7 @@ import { StudentModule } from './student/student.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(databaseProvider),
-    UserModule, AuthModule, AdminModule, StudentModule],
+    UserModule, AuthModule, AdminModule, StudentModule, ClassModule],
   controllers: [AppController],
   providers: [AppService],
 })

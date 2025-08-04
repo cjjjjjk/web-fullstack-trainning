@@ -1,29 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import IconUser from './components/IconUser.vue';
 
 const flex_column = ref('flex flex-column')
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav class="nav-links">
-        <RouterLink to="/home">[Vue]</RouterLink>
-        <RouterLink to="/about">[Vue]Components</RouterLink>
-        <RouterLink to="/profile">[Vue] CallAPI</RouterLink>
-        <RouterLink to="/login">[Vue] Routing</RouterLink>
-        <RouterLink to="/auth">[Nest] Auth Demo</RouterLink>
-        <RouterLink to="/student_management">[DEMO] Student Management</RouterLink>
-      </nav>
+
+    <header class="flex justify-center items-center">
+    <div class="navbar w-[90rem] max-w-[80vw] bg-base-100 shadow-sm rounded-xl">
+      <div class="flex-1">
+        <h3 class="btn btn-outline-primary text-xl font-bold hover:cursor-default">DEMO</h3>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <RouterLink class="px-2 btn btn-outline-primary me-2 rounded-xl" tag="li" to="/class">Classes</RouterLink>
+          <RouterLink class="px-2 btn btn-outline-primary me-2 rounded-xl" tag="li" to="/students">Students</RouterLink>
+          <RouterLink class="px-2 btn btn-outline-primary me-2 rounded-xl" tag="li" to="/auth">
+          <IconUser/>
+          </RouterLink>
+        </ul>
+      </div>
     </div>
   </header>
-
-  <div :class="flex_column">
+  <div :class="flex_column" class="mt-15">
     <RouterView />
   </div>
 </template>
+
+<script setup lang="ts">
+
+</script>
 
 <style scoped>
 header {
