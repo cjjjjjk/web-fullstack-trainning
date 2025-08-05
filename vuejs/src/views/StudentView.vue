@@ -1,192 +1,188 @@
 <template>
   <div class="demo-container flex gap-2 rounded-xl">
-   <div class="p-6 flex flex-col bg-white rounded-xl shadow-sm w-72 h-fit">
-      <span class="font-bold text-lg text-[#212121] mb-4">Filter</span>
+    <div class="p-6 flex flex-col bg-[var(--bg-card)] rounded-xl shadow-sm w-72 h-fit">
+      <span class="font-bold text-lg text-[var(--text-main)] mb-4">Filter</span>
       <form @submit.prevent="handleFilter" class="flex flex-col gap-4">
         <div class="mb-2">
-          <label for="student-filter-name" class="block text-sm font-medium text-[#212121] mb-1">Name</label>
+          <label for="student-filter-name" class="block text-sm font-medium text-[var(--text-label)] mb-1">Name</label>
           <input 
             id="student-filter-name" 
             type="text" 
             v-model="filter.name" 
             placeholder=" name" 
-            class="input" 
+            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
           />
         </div>
         <div class="mb-2">
-          <label for="student-filter-mssv" class="block text-sm font-medium text-[#212121] mb-1">MSSV</label>
+          <label for="student-filter-mssv" class="block text-sm font-medium text-[var(--text-label)] mb-1">MSSV</label>
           <input 
             id="student-filter-mssv" 
             type="text" 
             v-model="filter.mssv" 
             placeholder="MSSV" 
-            class="input" 
+            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
           />
         </div>
         <div class="mb-2">
-          <label for="student-filter-class" class="block text-sm font-medium text-[#212121] mb-1">Class</label>
+          <label for="student-filter-class" class="block text-sm font-medium text-[var(--text-label)] mb-1">Class</label>
           <select 
             id="student-filter-class" 
             v-model="filter.class"
-            class="input"
+            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]"
           >
             <option :value="undefined">-- All Classes --</option>
             <option 
               v-for="cls in allClasses" 
               :key="cls.code" 
               :value="cls"
+              class="text-[var(--text-button-secondary)]"
             >
               {{ cls.name }}
             </option>
           </select>
         </div>
         <div class="mb-2">
-          <label for="student-filter-address" class="block text-sm font-medium text-[#212121] mb-1">Address</label>
+          <label for="student-filter-address" class="block text-sm font-medium text-[var(--text-label)] mb-1">Address</label>
           <input 
             id="student-filter-address" 
             type="text" 
             v-model="filter.address" 
             placeholder=" address" 
-            class="input" 
+            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
           />
         </div>
         <div>
-          <label for="student-filter-email" class="block text-sm font-medium text-[#212121] mb-1">Email</label>
+          <label for="student-filter-email" class="block text-sm font-medium text-[var(--text-label)] mb-1">Email</label>
           <input 
             id="student-filter-email" 
             type="text" 
             v-model="filter.email" 
             placeholder=" email" 
-            class="input" 
+            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
           />
         </div>
 
-        <span class="text-[#212121]/60 italic text-sm">{{ filterRsMes }}</span>
+        <span class="text-[var(--text-subtle)] italic text-sm">{{ filterRsMes }}</span>
         <div class="flex justify-end items-center gap-3 mt-2">
           <button 
-            class="btn btn-outline btn-primary rounded-xl disabled:opacity-50 disabled:cursor-not-allowed" 
+            class="btn btn-outline rounded-xl text-[var(--text-button-secondary)] border-[var(--border-button)] disabled:opacity-50 disabled:cursor-not-allowed" 
             type="button" 
             @click="clearFilter"
           >Clear</button>
           <button 
-            class="btn btn-primary rounded-xl disabled:opacity-50 disabled:cursor-not-allowed" 
+            class="btn rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] disabled:opacity-50 disabled:cursor-not-allowed" 
             type="submit" 
           >GO</button>
-
         </div>
       </form>
     </div>
 
-    <div class=" rounded-xl px-2 grow flex flex-col">
-      <h2 class="font-bold mb-4 flex w-full items-center text-lg">
-        {{ title }}
-        <button class="ml-auto btn btn-soft btn-primary rounded-xl"
+    <div class="rounded-xl px-2 grow flex flex-col">
+      <h2 class="font-bold mb-4 flex w-full items-center text-lg text-[var(--text-main)] ">
+        <span class="bg-[var(--bg-card)]/50 rounded-xl p-2">
+          {{ title }}
+        </span>
+        <button class="ml-auto btn btn-soft rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)]"
             @click="handleAddNewStudent"
         >
           New Student
         </button>
       </h2>
 
-      <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-        <table class="table bg-base-200/40">
-          <thead >
-          <tr>
-                <th></th>
-            <th>
-              <div class="flex items-center gap-2 w-[8rem]">
-                <label
-                  v-if="sortOption.sortField == 'name'" 
-                  class="swap swap-flip text-md" >
-                  <input type="checkbox" />
-                  <div class="swap-off" @click="setSortType('desc')">▲</div>
-                  <div class="swap-on" @click="setSortType('asc')">▼</div>
-                </label>
-                <span class="hover:cursor-pointer hover:text-black" @click="setSortField('name')">Name</span>
-              </div>
-            </th>
-            <th>
-              <div class="flex items-center gap-2 w-[4rem]">
-                <label 
-                  v-if="sortOption.sortField == 'mssv'" 
-                  class="swap swap-flip text-md">
-                  <input type="checkbox" />
-                  <div class="swap-off" @click="setSortType('desc')">▲</div>
-                  <div class="swap-on" @click="setSortType('asc')">▼</div>
-                </label>
-                <span class="hover:cursor-pointer hover:text-black" @click="setSortField('mssv')">MSSV</span>
-              </div>
-            </th>
-                  <th class="w-[10rem]">Class
-            </th>
-            <th>
-              <div class="flex items-center gap-2  w-[8rem]">
-                <label 
-                  v-if="sortOption.sortField == 'address'" 
-                  class="swap swap-flip text-md">
-                  <input type="checkbox" />
-                  <div class="swap-off" @click="setSortType('desc')">▲</div>
-                  <div class="swap-on" @click="setSortType('asc')">▼</div>
-                </label>
-                <span class="hover:cursor-pointer hover:text-black" @click="setSortField('address')">Address</span>
-              </div>
-            </th>
-            <th>
-              <div class="flex items-center gap-2 w-[8rem]">
-                <label 
-                  v-if="sortOption.sortField == 'email'" 
-                  class="swap swap-flip text-md">
-                  <input type="checkbox" />
-                  <div class="swap-off" @click="setSortType('desc')">▲</div>
-                  <div class="swap-on" @click="setSortType('asc')">▼</div>
-                </label>
-                <span class="hover:cursor-pointer hover:text-black" @click="setSortField('email')">Email</span>
-              </div>
-            </th> 
-            <th class="w-[5rem]">Action
-            </th>
-          </tr>
+      <div class="overflow-x-auto rounded-box border border-[var(--border-table)] bg-[var(--bg-table)]/20">
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>
+                <div class="flex items-center gap-2 w-[8rem]">
+                  <label v-if="sortOption.sortField == 'name'" class="swap swap-flip text-md">
+                    <input type="checkbox" />
+                    <div class="swap-off" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                  </label>
+                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('name')">Name</span>
+                </div>
+              </th>
+              <th>
+                <div class="flex items-center gap-2 w-[4rem]">
+                  <label v-if="sortOption.sortField == 'mssv'" class="swap swap-flip text-md">
+                    <input type="checkbox" />
+                    <div class="swap-off" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                  </label>
+                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('mssv')">MSSV</span>
+                </div>
+              </th>
+              <th class="w-[10rem]">Class</th>
+              <th>
+                <div class="flex items-center gap-2 w-[8rem]">
+                  <label v-if="sortOption.sortField == 'address'" class="swap swap-flip text-md">
+                    <input type="checkbox" />
+                    <div class="swap-off" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                  </label>
+                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('address')">Address</span>
+                </div>
+              </th>
+              <th>
+                <div class="flex items-center gap-2 w-[8rem]">
+                  <label v-if="sortOption.sortField == 'email'" class="swap swap-flip text-md">
+                    <input type="checkbox" />
+                    <div class="swap-off" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                  </label>
+                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('email')">Email</span>
+                </div>
+              </th> 
+              <th class="w-[5rem]">Action</th>
+            </tr>
           </thead>
-          
-          <TransitionGroup name="list" tag="tbody">
-              <Transition v-if="isLoading" tag="tr" name="fade">
-                <td colspan="6" class="text-center py-30">
-                  <span class="loading loading-bars loading-xl"></span>
-                </td>
-              </Transition>
-              <tr v-else-if="!studentList.length">
-                <td colspan="6" class="text-center py-30">
-                  No results
-                </td>
-              </tr>
-              <tr 
-                v-else
-                v-for="(student, index) in studentList" 
-                :key="student.mssv"  
-                class="hover:bg-base-300"
-              >
-                <td>{{ ((pagination.page - 1) * pagination.limit) + index + 1 }}</td>
-                <td class="font-semibold">{{ student.name }}</td>
-                <td>{{ student.mssv }}</td>
-                <td class="hover:cursor-pointer hover:bg-base-200 hover:underline transition duration-200" 
-                  @click="filterByClass(student.class)"
-                >{{ student.class?.name ?? 'N/A' }}</td>
-                <td>{{ student.address }}</td>
-                <td>{{ student.email }}</td>
-                <td class="p-0">
-                  <div class="flex justify-center items-center w-full h-full">
-                    <IconAction
-                      @click="handleEditStudent(student)" 
-                      class="hover:cursor-pointer"
-                    />
-                  </div>
-                </td>
-              </tr>
-          </TransitionGroup>
 
+          <TransitionGroup name="list" tag="tbody">
+            <Transition v-if="isLoading" tag="tr" name="fade">
+              <td colspan="6" class="text-center py-30 text-black">
+                <span class="loading loading-bars loading-xl"></span>
+              </td>
+            </Transition>
+            <tr v-else-if="!studentList.length">
+              <td colspan="6" class="text-center py-30">
+                No results
+              </td>
+            </tr>
+            <tr 
+              v-else
+              v-for="(student, index) in studentList" 
+              :key="student.mssv"  
+              class="hover:bg-[var(--bg-table-hover)]"
+            >
+              <td>{{ ((pagination.page - 1) * pagination.limit) + index + 1 }}</td>
+              <td class="font-semibold text-[var(--text-main)]">
+                <span class="p-2 rounded-xl bg-[var(--bg-card)]/40">{{ student.name }}</span>
+              </td>
+              <td class="text-[var(--text-main)]">
+                <span class="p-2 rounded-xl bg-[var(--bg-card)]/40">{{ student.mssv }}</span>
+              </td>
+              <td class="hover:cursor-pointer hover:underline transition duration-200" 
+                @click="filterByClass(student.class)"
+              >{{ student.class?.name ?? 'N/A' }}</td>
+              <td>{{ student.address }}</td>
+              <td>{{ student.email }}</td>
+              <td class="p-0">
+                <div class="flex justify-center items-center w-full h-full">
+                  <IconAction
+                    @click="handleEditStudent(student)" 
+                    class="hover:cursor-pointer"
+                  />
+                </div>
+              </td>
+            </tr>
+          </TransitionGroup>
         </table>
       </div>
+
       <div class="w-full flex justify-between items-center gap-2 mt-1">
-        <span class="text-[#212121] font-medium">
+        <span class="text-[var(--text-secondary)] font-medium">
           Total: {{ pageInfor.totalStudent }}
         </span>
 
@@ -195,26 +191,26 @@
             id="limit-select"
             v-model="pagination.limit"
             @change="onLimitChange"
-            class="px-2 py-1 border rounded-xl text-sm border-none me-1"
+            class="px-2 py-1 border rounded-xl text-sm border-none me-1 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-button-secondary)]" 
           >
-          <option :value="10">10</option>
-          <option :value="15">15</option>
-          <option :value="20">20</option>
+            <option :value="10">10</option>
+            <option :value="15">15</option>
+            <option :value="20">20</option>
           </select>
           <button
-            class="px-3 py-1 text-primary-content bg-primary rounded-xl font-semibold hover:bg-base-content hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white   disabled:cursor-not-allowed"
+            class="px-3 py-1 text-[var(--text-button-primary)] bg-[var(--bg-button-primary)] rounded-xl font-semibold hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white disabled:cursor-not-allowed"
             :disabled="pagination.page <= 1"
             @click="pagination.page--"
           >
             pre
           </button>
 
-          <span class="px-3 py-1 text-sm text-[#212121] bg-primary-content rounded-xl font-bold">
+          <span class="px-3 py-1 text-sm text-[var(--text-pagination)] bg-[var(--bg-card)] rounded-xl font-bold">
             {{ pagination.page + "/" + pageInfor.totalPage }}
           </span>
 
           <button
-            class="px-3 py-1 text-primary-content bg-primary rounded-xl font-semibold hover:bg-base-content hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white   disabled:cursor-not-allowed"
+            class="px-3 py-1 text-[var(--text-button-primary)] bg-[var(--bg-button-primary)] rounded-xl font-semibold hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white disabled:cursor-not-allowed"
             :disabled="pagination.page >= pageInfor.totalPage"
             @click="pagination.page++"
           >
@@ -222,20 +218,17 @@
           </button>
         </div>
       </div>
-
-
     </div>
   </div>
-<StudentModal
-  v-if="showModal"
-  :type="editMode ? 'edit' : 'add'"
-  :data="editMode ? selectedStudent : undefined"
-  @save="handleSave"
-  @close="handleClose"
-/>
-<RedirectModal
-  v-if="isShowLoginDirectModal"
-/>
+
+  <StudentModal
+    v-if="showModal"
+    :type="editMode ? 'edit' : 'add'"
+    :data="editMode ? selectedStudent : undefined"
+    @save="handleSave"
+    @close="handleClose"
+  />
+  <RedirectModal v-if="isShowLoginDirectModal" />
 </template>
 
 <script setup lang="ts">
@@ -383,7 +376,6 @@ const getAllClasses = async ()=> {
 // all students, classes
 onMounted(async ()=>{
     await getAllClasses()
-    getStudents()
     if(classCode) {
       const selectedClass = allClasses.value.find(
         (c) => {
@@ -395,6 +387,8 @@ onMounted(async ()=>{
         filter.value.class = selectedClass
         filterByClass(selectedClass)
       }
+    } else {
+      getStudents()
     }
 })
 </script>

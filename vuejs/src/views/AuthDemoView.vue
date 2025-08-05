@@ -4,7 +4,7 @@
         <Transition name="up">
         <div 
             v-if="!isLogin"
-            class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-3">
                 <div class="mb-4">
@@ -42,7 +42,7 @@
             name="move">
             <div
             v-if="isSignUp"
-            class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Sign up</h2>
             <form @submit.prevent="handlerSignUpSubmit" class="flex flex-col gap-3">
                 <div class="mb-4">
