@@ -1,156 +1,250 @@
-<!-- src/views/AuthDemoView.vue -->
 <template>
-    <div class="fixed top-0 left-0 min-h-screen w-screen flex gap-3 items-center justify-center">
-        <Transition name="up">
-        <div 
-            v-if="!isLogin"
-            class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
-            <form @submit.prevent="handleSubmit" class="flex flex-col gap-3">
-                <div class="mb-4">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input v-model="phone" type="tel" id="phone"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-200"
-                        placeholder="phone:1234 (admin) 0123(user)" required @input="validatePhone()" 
-                        :disabled="isSignUp ? true : false"
-                        />
-                        <p v-if="phoneError" class="text-red-500 text-sm mt-1">{{ phoneError }}</p>
-                    </div>
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input v-model="password" type="password" id="password"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-200"
-                        placeholder="password: 123" required @input="validatePassword()" 
-                        :disabled="isSignUp ? true : false"
-                        />
-                    <p v-if="passwordError" class="text-red-500 text-sm mt-1">{{ passwordError }}</p>
-                </div>
-                <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple disabled:bg-gray-400"
-                    :disabled="isSignUp || !isFormValid">
-                    Login
-                </button>
-                <span 
-                    class="text-blue-500 hover:underline hover:cursor-pointer"
-                    @click="handleSignUp"
-                >sign up ?</span>
-            </form>
-        </div>
-        </Transition>
-
+  <div class="demo-container flex flex-row-reverse">
+    <!-- Left: Forms -->
+    <div class="w-1/3 flex items-center justify-center ">
+      <div class="w-full max-w-md">
         <Transition 
-            name="move">
-            <div
-            v-if="isSignUp"
-            class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Sign up</h2>
-            <form @submit.prevent="handlerSignUpSubmit" class="flex flex-col gap-3">
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input v-model="name" type="text" id="name"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your name" required @input="validateName" />
-                    <p v-if="nameError" class="text-red-500 text-sm mt-1">{{ nameError }}</p>
-                </div>
-                <div class="mb-4">
-                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                    <input v-model="address" type="text" id="address"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your address" required 
-                        @input="validateAddress"
-                        />
-                    <p v-if="addressError" class="text-red-500 text-sm mt-1">{{ addressError }}</p>
-                </div>
-                <div class="mb-4">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input v-model="phoneSignUp" type="tel" id="phone"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your phone number" required />
-                    <p v-if="phoneErrorSignUp" class="text-red-500 text-sm mt-1">{{ phoneErrorSignUp }}</p>
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input v-model="passwordSignUp" type="password" id="password"
-                        class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter your password" required />
-                    <p v-if="passwordErrorSignUp" class="text-red-500 text-sm mt-1">{{ passwordErrorSignUp }}</p>
-                </div>
-                <button type="submit"
-                    :disabled="!isSignUpFormValid || isSignUpLoading"
-                    @click="handlerSignUpSubmit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple disabled:bg-gray-400 btn"
-                    >
-                     <span v-if="isSignUpLoading" class="loading loading-spinner"></span>
-                    Sign up
-                </button>
-            </form>
-            </div>
-        </Transition>
-        <Transition name="movein">
-
-        <div 
-        v-if="isLogin"
-        class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-2"
+            v-if="!isLogin && !isSignUp"
         >
-            <!-- [Design AI gen] -->
-            <div v-if="userInfor" class="relative p-6 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-md">
-            <!-- Top Section: Name and Role -->
-            <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-semibold text-gray-900">{{ userInfor.name }}</h2>
-            <span class="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-sm shadow-sm hover:bg-blue-700 transition-colors duration-200">
-                {{ userInfor.role }}
-            </span>
+          <div 
+            class="bg-[var(--bg-card)]/90 backdrop-blur-md p-8 rounded-2xl shadow-sm w-full transition-all duration-300"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-extrabold text-[var(--text-main)] tracking-tight">Login</h2>
+              <div class="w-16 h-2 bg-[var(--accent-primary)] rounded-full"></div>
             </div>
-
-            <!-- Divider -->
-            <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-4"></div>
-
-            <!-- Info Section -->
-            <div class="space-y-3 py-3 flex flex-col gap-3" >
-            <div class="flex items-center space-x-2" v-if="userInfor.address">
-                <p class="text-gray-700"><span class="font-medium">Address:</span> {{ userInfor.address }}</p>
-            </div>
-            <div class="flex items-center space-x-2">
-                <p class="text-gray-700"><span class="font-medium">Phone:</span> {{ userInfor.phone }}</p>
-            </div>
-            <button 
-                @click="handleDelete"
-                class="bg-red-500 rounded-sm text-white font-semibold px-3 self-start hover:bg-red-800 hover:cursor-pointer">
-                Delete
-            </button>
-            </div>
-
-            <!-- Decorative Element -->
-            <div class="absolute top-0 right-0 w-20 h-20 bg-blue-100 rounded-bl-full opacity-20"></div>
-            </div>
-                <div
-                class="flex flex-col p-4 border border-gray-300 rounded-lg shadow-sm bg-white" 
-                v-if="adminContent"
-                >
-                    <span class="font-bold"
-                        :class="adminContent.status == 200 ? 'text-green-600' : 'text-red-600' "
-                    >{{ adminContent.title ?? "Trạng thái ..." }}</span>
-                    <span
-                        v-if="adminContent.status == 200"
-                    >{{ `Content ID: ${adminContent.id}` }}</span>
-                    <span>{{ adminContent.content }}</span>
-                </div>
-                <!-- <button 
-                    v-if="!adminContent"
-                    @click="handleGetAdminContent"
-                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition duration-200 relative overflow-hidden ripple">
-                    Get Admin Content
-                </button> -->
-                <button 
-                    @click="handleLogout"
-                    class="w-full text-red-600 py-2 rounded-md hover:underline hover:cursor-pointer transition duration-200 relative overflow-hidden ripple"
-                    >
-                    log out
-                </button>
-
-        </div>
+            <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+              <div class="relative">
+                <label for="phone" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Phone Number</label>
+                <input 
+                  v-model="phone" 
+                  type="tel" 
+                  id="phone"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter phone number (e.g., 1234 for admin)"
+                  required 
+                  @input="validatePhone()"
+                  :disabled="isSignUp"
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m-3 2h12M9 9v2m-3 2h12M9 15v2m-6 4h12a2 2 0 002-2V5a2 2 0 00-2-2H3a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <p v-if="phoneError" class="text-[var(--error)] text-sm mt-1">{{ phoneError }}</p>
+              </div>
+              <div class="relative">
+                <label for="password" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Password</label>
+                <input 
+                  v-model="password" 
+                  type="password" 
+                  id="password"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter password (e.g., 123)"
+                  required 
+                  @input="validatePassword()"
+                  :disabled="isSignUp"
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 .896 2 2zM16 20H8v-2c0-2.206 1.794-4 4-4s4 1.794 4 4v2z" />
+                </svg>
+                <p v-if="passwordError" class="text-[var(--error)] text-sm mt-1">{{ passwordError }}</p>
+              </div>
+              <button 
+                type="submit"
+                class="w-full bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] py-2.5 rounded-xl hover:bg-[var(--hover-button-primary)] transition-all duration-300 font-semibold disabled:bg-[var(--bg-button-secondary)] disabled:text-[var(--text-subtle)] disabled:cursor-not-allowed"
+                :disabled="isSignUp || !isFormValid"
+              >
+                Login
+              </button>
+              <span 
+                class="text-[var(--accent-primary)] hover:text-[var(--hover-button-primary)] hover:underline hover:cursor-pointer text-sm text-center"
+                @click="handleSignUp"
+              >
+                Don't have an account? Sign up
+              </span>
+            </form>
+          </div>
         </Transition>
+
+        <Transition v-if="isSignUp" >
+          <div
+            
+            class="bg-[var(--bg-card)]/90 backdrop-blur-md p-8 rounded-2xl shadow-sm w-full transition-all duration-300"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-extrabold text-[var(--text-main)] tracking-tight">Sign Up</h2>
+              <div class="w-16 h-2 bg-[var(--accent-primary)] rounded-full"></div>
+            </div>
+            <form @submit.prevent="handlerSignUpSubmit" class="flex flex-col gap-4">
+              <div class="relative">
+                <label for="name" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Name</label>
+                <input 
+                  v-model="name" 
+                  type="text" 
+                  id="name"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter your name"
+                  required 
+                  @input="validateName"
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <p v-if="nameError" class="text-[var(--error)] text-sm mt-1">{{ nameError }}</p>
+              </div>
+              <div class="relative">
+                <label for="address" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Address</label>
+                <input 
+                  v-model="address" 
+                  type="text" 
+                  id="address"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter your address"
+                  required 
+                  @input="validateAddress"
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <p v-if="addressError" class="text-[var(--error)] text-sm mt-1">{{ addressError }}</p>
+              </div>
+              <div class="relative">
+                <label for="phone" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Phone Number</label>
+                <input 
+                  v-model="phoneSignUp" 
+                  type="tel" 
+                  id="phone"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter your phone number"
+                  required 
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m-3 2h12M9 9v2m-3 2h12M9 15v2m-6 4h12a2 2 0 002-2V5a2 2 0 00-2-2H3a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <p v-if="phoneErrorSignUp" class="text-[var(--error)] text-sm mt-1">{{ phoneErrorSignUp }}</p>
+              </div>
+              <div class="relative">
+                <label for="password" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Password</label>
+                <input 
+                  v-model="passwordSignUp" 
+                  type="password" 
+                  id="password"
+                  class="w-full pl-10 pr-4 py-2.5 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+                  placeholder="Enter your password"
+                  required 
+                />
+                <svg class="absolute left-3 top-9 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 .896 2 2zM16 20H8v-2c0-2.206 1.794-4 4-4s4 1.794 4 4v2z" />
+                </svg>
+                <p v-if="passwordErrorSignUp" class="text-[var(--error)] text-sm mt-1">{{ passwordErrorSignUp }}</p>
+              </div>
+              <button 
+                type="submit"
+                class="w-full bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] py-2.5 rounded-xl hover:bg-[var(--hover-button-primary)] transition-all duration-300 font-semibold disabled:bg-[var(--bg-button-secondary)] disabled:text-[var(--text-subtle)] disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                :disabled="!isSignUpFormValid || isSignUpLoading"
+                @click="handlerSignUpSubmit"
+              >
+                <span v-if="isSignUpLoading" class="loading loading-spinner text-[var(--text-button-primary)]"></span>
+                Sign Up
+              </button>
+              <span 
+                class="text-[var(--accent-primary)] hover:text-[var(--hover-button-primary)] hover:underline hover:cursor-pointer text-sm text-center"
+                @click="handleSignUp"
+              >
+                Already have an account? Login
+              </span>
+            </form>
+          </div>
+        </Transition>
+
+        <Transition name="movein">
+          <div 
+            v-if="isLogin "
+            class="w-full max-w-md p-8 bg-[var(--bg-card)]/90 backdrop-blur-md rounded-2xl shadow-sm space-y-6 transition-all duration-300 "
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-extrabold text-[var(--text-main)] tracking-tight">User Profile</h2>
+              <div class="w-16 h-2 bg-[var(--accent-primary)] rounded-full"></div>
+            </div>
+
+            <!-- Card User Info -->
+            <div 
+              v-if="userInfor && !isLoading"
+              class="card bg-[var(--bg-card-accent)]/50 border-[1.5px] border-[var(--border-table)] shadow-md transition-all duration-300 relative"
+            >
+              <div class="card-body relative">
+                <!-- Decorative corner -->
+                <div class="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-primary)] opacity-10 rounded-bl-full pointer-events-none"></div>
+
+                <!-- Header: Name + Role -->
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="card-title text-[var(--text-main)] text-xl font-semibold">
+                    {{ userInfor.name }}
+                  </h2>
+                  <div class="badge bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] px-4 py-1 text-sm font-semibold rounded-lg">
+                    {{ userInfor.role }}
+                  </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider my-2 border-[var(--border-table)]"></div>
+
+                <!-- Info -->
+                <div class="flex flex-col gap-3 text-[var(--text-secondary)]">
+                  <p v-if="userInfor.address">
+                    <span class="font-semibold text-[var(--text-main)]">Address:</span> {{ userInfor.address }}
+                  </p>
+                  <p>
+                    <span class="font-semibold text-[var(--text-main)]">Phone:</span> {{ userInfor.phone }}
+                  </p>
+                  <button
+                    @click="handleDelete"
+                    class="btn w-fit mt-3 bg-[var(--error)] text-[var(--text-button-primary)] hover:bg-[var(--error)]/80 transition-all duration-300 rounded-lg px-4 py-2 font-semibold"
+                  >
+                    Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div v-else class="py-10 grid items-center justify-center">
+              <span class="loading loading-bars loading-xl text-[var(--text-loading)]"></span>
+            </div>
+
+            <!-- Admin content section -->
+            <div 
+              v-if="adminContent"
+              class="alert shadow-sm border-[1.5px] border-[var(--border-table)]"
+              :class="adminContent.status == 200 ? 'bg-[var(--accent-primary)]/20 text-[var(--text-main)]' : 'bg-[var(--error)]/20 text-[var(--text-main)]'"
+            >
+              <div class="flex flex-col gap-1">
+                <span class="font-semibold text-[var(--text-main)]">{{ adminContent.title ?? 'Status...' }}</span>
+                <div class="text-sm">
+                  <span v-if="adminContent.status == 200">Content ID: {{ adminContent.id }}</span><br>
+                  <span>{{ adminContent.content }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logout button -->
+            <button
+              @click="handleLogout"
+              class="btn w-full bg-[var(--bg-button-secondary)] text-[var(--text-button-secondary)] border-[1.5px] border-[var(--border-button)] hover:bg-[var(--hover-button-secondary)] hover:text-[var(--text-button-primary)] transition-all duration-300 rounded-xl font-semibold"
+            >
+              Log Out
+            </button>
+          </div>
+        </Transition>
+      </div>
     </div>
+    <!-- Right: Image -->
+    <div class="grow screen bg-cover bg-center">
+      <div class="w-full h-full flex items-center justify-center">
+        <div class="text-center text-[var(--text-main)] p-8">
+          <h1 class="text-4xl font-extrabold tracking-tight mb-4">Welcome to DEMO</h1>
+          <p class="text-lg text-[var(--text-subtle)]">Join aus to assege ynar cl ithnd stuousma w ease!</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -163,6 +257,8 @@ const router = useRouter()
 // login status with default value
 const isLogin = ref(localStorage.getItem('access_token') !== null)
 const isSignUp = ref(false)
+
+const isLoading = ref<boolean>(false)
 
 const userInfor = ref<any | null>(null)
 
@@ -325,9 +421,18 @@ watch(isLogin, (newValue) => {
 
 // Getme api
 const getUserData = async ()=> {
-    
-    const res = await onGetMe();
-    userInfor.value = res
+    isLoading.value = true 
+    try {
+
+      const res = await onGetMe();
+      userInfor.value = res
+    } catch(err: any) {
+      console.log('err:', err)
+    } finally {
+      setTimeout(() => {
+        isLoading.value = false
+      }, 500);
+    }
 }
 
 const handleSignUp = ()=> {
@@ -388,7 +493,14 @@ onMounted(()=>{
 
 
 <!-- STYLE  -->
-<style>
+<style scoped>
+
+.demo-container {
+    height: 60rem;
+    max-height: 85vh;
+    width: 100rem;
+    max-width: 90vw;
+}
 .ripple {
     position: relative;
     overflow: hidden;
@@ -419,27 +531,7 @@ onMounted(()=>{
     }
 }
 
-.move-enter-active,
-.move-leave-active {
-    transition:  all 0.4s ease-in-out;
-}
 
-.move-enter-from,
-.move-leave-to {
-    opacity: 0;
-    transform: translateX(-10px);
-}
-
-.up-enter-active,
-.up-leave-active {
-    transition:  all 0.4s ease-in-out;
-}
-
-.up-enter-from,
-.up-leave-to {
-    opacity: 0;
-    transform: translatey(10px);
-}
 .movein-enter-active {
     transition:  all 0.4s ease-in-out;
 }

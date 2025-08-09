@@ -1,7 +1,7 @@
 <template>
   <div class="fixed inset-0 bg-gray-500/30 flex items-center justify-center z-50">
     <div class="bg-white rounded-xl shadow-lg w-[40rem] p-8 relative top-[-6rem]">
-      <h2 class="text-xl font-bold mb-6">
+      <h2 class="text-xl font-bold mb-3">
         {{ type === 'add' ? 'New Student' : 'Edit Student' }}
       </h2>
 

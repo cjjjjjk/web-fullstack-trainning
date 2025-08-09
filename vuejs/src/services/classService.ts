@@ -116,3 +116,31 @@ export const deleteClassByCode = async function (code: string): Promise<any> {
         }
     }
 }
+
+export const getAllClassesSortedByTotalStudent = async function (): Promise<any> {
+    const token = localStorage.getItem('access_token')
+    if (!token) return {
+        isSuccess: false,
+        message: "token require !"
+    }
+
+    try {
+        const res = await baseNESTDemoAPI.get('/class', {
+            params: {
+                limit: 999999, // No limit
+                sortOrder: 'desc' // Descending order
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+    } catch (err: any) {
+        console.error('getAllClassesSortedByTotalStudent error:', err)
+        return {
+            isSuccess: false,
+            data: [],
+            message: err.message
+        }
+    }
+}

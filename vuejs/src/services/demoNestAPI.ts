@@ -105,3 +105,30 @@ export const onDelete = async function (name: string) {
         }
     }
 }
+
+
+// app data config 
+export interface AppConfig {
+    maximumClassNumber: number
+}
+export const onGetAppConfig = async function () {
+    const token = localStorage.getItem('access_token',)
+    if (!token) return {
+        isSuccess: false,
+        message: "token require !"
+    }
+
+    try {
+        const res = await baseNESTDemoAPI.get('config', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        if (res) {
+            return res.data as AppConfig
+        }
+    } catch (err: any) {
+        console.log('get config false: ', err)
+    }
+}

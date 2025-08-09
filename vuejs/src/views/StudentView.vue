@@ -1,36 +1,43 @@
 <template>
-  <div class="demo-container flex gap-2 rounded-xl">
-    <div class="p-6 flex flex-col bg-[var(--bg-card)] rounded-xl shadow-sm w-72 h-fit">
-      <span class="font-bold text-lg text-[var(--text-main)] mb-4">Filter</span>
-      <form @submit.prevent="handleFilter" class="flex flex-col gap-4">
-        <div class="mb-2">
-          <label for="student-filter-name" class="block text-sm font-medium text-[var(--text-label)] mb-1">Name</label>
-          <input 
-            id="student-filter-name" 
-            type="text" 
-            v-model="filter.name" 
-            placeholder=" name" 
-            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
-          />
+  <div class="demo-container self-start  flex gap-2 rounded-xl">
+    <div class="p-4 h-full pb-6 flex flex-col bg-[var(--bg-card)] rounded-sm shadow-sm w-80 transition-all duration-300">
+      <div class="flex items-center justify-between mb-5 mt-5">
+        <div class="w-12 h-2 bg-[var(--accent-primary)] rounded-full"></div>
+      </div>
+      <form @submit.prevent="handleFilter" class="flex flex-col gap-5">
+        <div class="relative">
+          <label for="student-filter-name" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Name</label>
+          <div class="relative">
+            <input 
+              id="student-filter-name" 
+              type="text" 
+              v-model="filter.name" 
+              placeholder="Enter name" 
+              class="w-full pl-10 pr-4 py-2 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
+            />
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
         </div>
-        <div class="mb-2">
-          <label for="student-filter-mssv" class="block text-sm font-medium text-[var(--text-label)] mb-1">MSSV</label>
+        <div class="relative">
+          <label for="student-filter-mssv" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">MSSV</label>
           <input 
             id="student-filter-mssv" 
             type="text" 
             v-model="filter.mssv" 
-            placeholder="MSSV" 
-            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
+            placeholder="Enter MSSV" 
+            class="w-full pl-4 pr-4 py-2 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
           />
         </div>
-        <div class="mb-2">
-          <label for="student-filter-class" class="block text-sm font-medium text-[var(--text-label)] mb-1">Class</label>
+        <div class="relative">
+          <label for="student-filter-class" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Class</label>
           <select 
             id="student-filter-class" 
             v-model="filter.class"
-            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]"
+            class="w-full pl-4 pr-8 py-2 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:rin g-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] appearance-none transition-all duration-200"
           >
-            <option :value="undefined">-- All Classes --</option>
+            <option :value="undefined" class="text-[var(--text-button-secondary)]">-- All Classes --</option>
             <option 
               v-for="cls in allClasses" 
               :key="cls.code" 
@@ -40,181 +47,217 @@
               {{ cls.name }}
             </option>
           </select>
+          <svg class="absolute right-3 top-10 w-5 h-5 text-[var(--text-subtle)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <div class="mb-2">
-          <label for="student-filter-address" class="block text-sm font-medium text-[var(--text-label)] mb-1">Address</label>
+        <div class="relative">
+          <label for="student-filter-address" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Address</label>
           <input 
             id="student-filter-address" 
             type="text" 
             v-model="filter.address" 
-            placeholder=" address" 
-            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
+            placeholder="Enter address" 
+            class="w-full pl-4 pr-4 py-2 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
           />
         </div>
-        <div>
-          <label for="student-filter-email" class="block text-sm font-medium text-[var(--text-label)] mb-1">Email</label>
+        <div class="relative">
+          <label for="student-filter-email" class="block text-sm font-semibold text-[var(--text-label)] mb-1.5">Email</label>
           <input 
             id="student-filter-email" 
             type="text" 
             v-model="filter.email" 
-            placeholder=" email" 
-            class="input border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)]" 
+            placeholder="Enter email" 
+            class="w-full pl-4 pr-4 py-2 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200"
           />
         </div>
-
         <span class="text-[var(--text-subtle)] italic text-sm">{{ filterRsMes }}</span>
-        <div class="flex justify-end items-center gap-3 mt-2">
+        <div class="flex justify-end items-center gap-4 mt-4">
           <button 
-            class="btn btn-outline rounded-xl text-[var(--text-button-secondary)] border-[var(--border-button)] disabled:opacity-50 disabled:cursor-not-allowed" 
+            class="px-4 py-2 rounded-xl border-[1.5px] border-[var(--border-button)] text-[var(--text-button-secondary)] hover:bg-[var(--hover-button-secondary)] hover:text-[var(--text-button-primary)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" 
             type="button" 
             @click="clearFilter"
           >Clear</button>
           <button 
-            class="btn rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] disabled:opacity-50 disabled:cursor-not-allowed" 
-            type="submit" 
-          >GO</button>
+            class="px-4 py-2 rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] hover:bg-[var(--hover-button-primary)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" 
+            type="submit"
+          >Apply</button>
         </div>
       </form>
     </div>
 
-    <div class="rounded-xl px-2 grow flex flex-col">
-      <h2 class="font-bold mb-4 flex w-full items-center text-lg text-[var(--text-main)] ">
-        <span class="bg-[var(--bg-card)]/50 rounded-xl p-2">
-          {{ title }}
-        </span>
-        <button class="ml-auto btn btn-soft rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)]"
-            @click="handleAddNewStudent"
+    <div class="data-container h-[100%] rounded-sm px-4 py-6 grow flex flex-col bg-[var(--bg-card)]/90 backdrop-blur-md shadow-sm transition-all duration-300">
+      <div class="flex w-full items-center mb-6">
+        <h2 class="font-extrabold text-2xl text-[var(--text-main)] flex items-center gap-3">
+          <span class="p-3 rounded-xl bg-[var(--bg-card-accent)]/60 tracking-tight">{{ title }}</span>
+        </h2>
+        <button 
+          class="ml-auto btn rounded-xl bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] hover:bg-[var(--hover-button-primary)] transition-all duration-300 px-4 py-2 font-semibold flex items-center gap-2"
+          @click="handleAddNewStudent"
         >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
           New Student
         </button>
-      </h2>
+      </div>
 
-      <div class="overflow-x-auto rounded-box border border-[var(--border-table)] bg-[var(--bg-table)]/20">
-        <table class="table">
+      <div class="overflow-x-auto rounded-xl border-[1.5px] border-[var(--border-table)] bg-[var(--bg-table)]/30">
+        <table class="table w-full">
           <thead>
-            <tr>
-              <th></th>
-              <th>
-                <div class="flex items-center gap-2 w-[8rem]">
-                  <label v-if="sortOption.sortField == 'name'" class="swap swap-flip text-md">
+            <tr class="text-[var(--text-main)] bg-[var(--bg-card-accent)]/50">
+              <th class="w-12"></th>
+              <th class="w-[12rem]">
+                <div class="flex items-center gap-2 font-semibold">
+                  <label v-if="sortOption.sortField == 'name'" class="swap swap-flip text-md cursor-pointer">
                     <input type="checkbox" />
-                    <div class="swap-off" @click="setSortType('desc')">▲</div>
-                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                    <div class="swap-off text-[var(--accent-primary)]" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on text-[var(--accent-primary)]" @click="setSortType('asc')">▼</div>
                   </label>
-                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('name')">Name</span>
+                  <span class="hover:cursor-pointer hover:text-[var(--accent-primary)] transition duration-200" @click="setSortField('name')">Name</span>
                 </div>
               </th>
-              <th>
-                <div class="flex items-center gap-2 w-[4rem]">
-                  <label v-if="sortOption.sortField == 'mssv'" class="swap swap-flip text-md">
+              <th class="w-[4rem]">
+                <div class="flex items-center gap-2 font-semibold">
+                  <label v-if="sortOption.sortField == 'mssv'" class="swap swap-flip text-md cursor-pointer">
                     <input type="checkbox" />
-                    <div class="swap-off" @click="setSortType('desc')">▲</div>
-                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                    <div class="swap-off text-[var(--accent-primary)]" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on text-[var(--accent-primary)]" @click="setSortType('asc')">▼</div>
                   </label>
-                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('mssv')">MSSV</span>
+                  <span class="hover:cursor-pointer hover:text-[var(--accent-primary)] transition duration-200" @click="setSortField('mssv')">MSSV</span>
                 </div>
               </th>
-              <th class="w-[10rem]">Class</th>
-              <th>
-                <div class="flex items-center gap-2 w-[8rem]">
-                  <label v-if="sortOption.sortField == 'address'" class="swap swap-flip text-md">
+              <th class="w-[10rem] font-semibold">Class</th>
+              <th class="w-[8rem]">
+                <div class="flex items-center gap-2 font-semibold">
+                  <label v-if="sortOption.sortField == 'address'" class="swap swap-flip text-md cursor-pointer">
                     <input type="checkbox" />
-                    <div class="swap-off" @click="setSortType('desc')">▲</div>
-                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                    <div class="swap-off text-[var(--accent-primary)]" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on text-[var(--accent-primary)]" @click="setSortType('asc')">▼</div>
                   </label>
-                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('address')">Address</span>
+                  <span class="hover:cursor-pointer hover:text-[var(--accent-primary)] transition duration-200" @click="setSortField('address')">Address</span>
                 </div>
               </th>
-              <th>
-                <div class="flex items-center gap-2 w-[8rem]">
-                  <label v-if="sortOption.sortField == 'email'" class="swap swap-flip text-md">
+              <th class="w-[8rem]">
+                <div class="flex items-center gap-2 font-semibold">
+                  <label v-if="sortOption.sortField == 'email'" class="swap swap-flip text-md cursor-pointer">
                     <input type="checkbox" />
-                    <div class="swap-off" @click="setSortType('desc')">▲</div>
-                    <div class="swap-on" @click="setSortType('asc')">▼</div>
+                    <div class="swap-off text-[var(--accent-primary)]" @click="setSortType('desc')">▲</div>
+                    <div class="swap-on text-[var(--accent-primary)]" @click="setSortType('asc')">▼</div>
                   </label>
-                  <span class="hover:cursor-pointer hover:text-[var(--text-main)]" @click="setSortField('email')">Email</span>
+                  <span class="hover:cursor-pointer hover:text-[var(--accent-primary)] transition duration-200" @click="setSortField('email')">Email</span>
                 </div>
-              </th> 
-              <th class="w-[5rem]">Action</th>
+              </th>
+              <th class="w-[5rem] font-semibold">Action</th>
             </tr>
           </thead>
 
-          <TransitionGroup name="list" tag="tbody">
-            <Transition v-if="isLoading" tag="tr" name="fade">
-              <td colspan="6" class="text-center py-30 text-black">
-                <span class="loading loading-bars loading-xl"></span>
-              </td>
-            </Transition>
-            <tr v-else-if="!studentList.length">
-              <td colspan="6" class="text-center py-30">
-                No results
-              </td>
-            </tr>
-            <tr 
+          <TransitionGroup name="list"
+          >
+            <tbody v-if="isLoading">
+                <tr  class="fade">
+                <td colspan="7" class="text-center py-12 text-[var(--text-loading)]">
+                  <span class="loading loading-bars loading-xl text-[var(--text-loading)]"></span>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else-if="!studentList.length">
+                <tr  class="text-[var(--text-subtle)]">
+                <td colspan="7" class="text-center py-12 font-medium">No results found</td>
+              </tr>
+            </tbody>
+            <tbody 
               v-else
+            >
+              
+            <tr 
               v-for="(student, index) in studentList" 
               :key="student.mssv"  
-              class="hover:bg-[var(--bg-table-hover)]"
+              class="hover:bg-[var(--bg-table-hover)] transition-all duration-200"
             >
-              <td>{{ ((pagination.page - 1) * pagination.limit) + index + 1 }}</td>
+              <td class="text-[var(--text-secondary)]">{{ ((pagination.page - 1) * pagination.limit) + index + 1 }}</td>
               <td class="font-semibold text-[var(--text-main)]">
-                <span class="p-2 rounded-xl bg-[var(--bg-card)]/40">{{ student.name }}</span>
+                <span class="p-2 rounded-lg bg-[var(--bg-card-accent)]/50">{{ student.name }}</span>
               </td>
               <td class="text-[var(--text-main)]">
-                <span class="p-2 rounded-xl bg-[var(--bg-card)]/40">{{ student.mssv }}</span>
+                <span class="p-2 rounded-lg bg-[var(--bg-card-accent)]/50">{{ student.mssv }}</span>
               </td>
-              <td class="hover:cursor-pointer hover:underline transition duration-200" 
+              <td class="hover:cursor-pointer text-[var(--text-main)] hover:text-[var(--accent-primary)] hover:underline transition duration-200" 
                 @click="filterByClass(student.class)"
-              >{{ student.class?.name ?? 'N/A' }}</td>
-              <td>{{ student.address }}</td>
-              <td>{{ student.email }}</td>
+              >
+                {{ student.class?.name ?? 'N/A' }}
+              </td>
+              <td class="text-[var(--text-secondary)]">{{ student.address }}</td>
+              <td class="text-[var(--text-secondary)]">{{ student.email }}</td>
               <td class="p-0">
-                <div class="flex justify-center items-center w-full h-full">
-                  <IconAction
+                <div class="ms-3 h-full">
+                  <button
                     @click="handleEditStudent(student)" 
-                    class="hover:cursor-pointer"
-                  />
+                    class="p-2 rounded-lg hover:bg-[var(--hover-button-secondary)] text-[var(--accent-secondary)] hover:text-[var(--text-button-primary)] transition-all duration-200"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
                 </div>
               </td>
             </tr>
+            </tbody>
+
           </TransitionGroup>
         </table>
       </div>
-
-      <div class="w-full flex justify-between items-center gap-2 mt-1">
-        <span class="text-[var(--text-secondary)] font-medium">
+      <div class="w-full flex justify-between items-center gap-4 mt-1 bg-[var(--bg-card)]/90 backdrop-blur-md p-4 transition-all duration-300">
+        <span class="text-[var(--text-secondary)] font-semibold text-sm flex items-center gap-2">
+          <svg class="w-5 h-5 text-[var(--accent-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
           Total: {{ pageInfor.totalStudent }}
         </span>
 
-        <div class="flex items-center gap-2 mt-1">
-          <select
-            id="limit-select"
-            v-model="pagination.limit"
-            @change="onLimitChange"
-            class="px-2 py-1 border rounded-xl text-sm border-none me-1 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-button-secondary)]" 
-          >
-            <option :value="10">10</option>
-            <option :value="15">15</option>
-            <option :value="20">20</option>
-          </select>
+        <div class="flex items-center gap-3">
+          <!-- Select + icon dropdown -->
+          <div class="relative">
+            <select
+              id="limit-select"
+              v-model="pagination.limit"
+              @change="onLimitChange"
+              class="px-3 py-2 pr-10 rounded-lg border-[1.5px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-button-secondary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-[var(--input-focus)] transition-all duration-200 text-sm appearance-none w-full"
+            >
+              <option :value="10">10</option>
+              <option :value="15">15</option>
+              <option :value="20">20</option>
+            </select>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-subtle)] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          <!-- Prev button -->
           <button
-            class="px-3 py-1 text-[var(--text-button-primary)] bg-[var(--bg-button-primary)] rounded-xl font-semibold hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white disabled:cursor-not-allowed"
+            class="p-2 rounded-lg bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] hover:bg-[var(--hover-button-primary)] transition-all duration-300 disabled:bg-[var(--bg-button-secondary)] disabled:text-[var(--text-subtle)] disabled:cursor-not-allowed"
             :disabled="pagination.page <= 1"
             @click="pagination.page--"
           >
-            pre
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
 
-          <span class="px-3 py-1 text-sm text-[var(--text-pagination)] bg-[var(--bg-card)] rounded-xl font-bold">
-            {{ pagination.page + "/" + pageInfor.totalPage }}
+          <span class="px-4 py-2 text-sm rounded-lg text-[var(--text-button-secondary)] font-semibold flex items-center gap-2">
+            {{ pagination.page }} / {{ pageInfor.totalPage }}
           </span>
 
+          <!-- Next button -->
           <button
-            class="px-3 py-1 text-[var(--text-button-primary)] bg-[var(--bg-button-primary)] rounded-xl font-semibold hover:cursor-pointer disabled:bg-gray-400/60 disabled:text-white disabled:cursor-not-allowed"
+            class="p-2 rounded-lg bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] hover:bg-[var(--hover-button-primary)] transition-all duration-300 disabled:bg-[var(--bg-button-secondary)] disabled:text-[var(--text-subtle)] disabled:cursor-not-allowed"
             :disabled="pagination.page >= pageInfor.totalPage"
             @click="pagination.page++"
           >
-            next
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </div>
@@ -235,7 +278,6 @@
 import {onMounted, reactive, ref, watch} from 'vue';
 import {filterStudents, PaginationConfig, SortConfig, StudentEntity } from '../services/studentService';
 import StudentModal from '../components/StudentModal.vue';
-import IconAction from '../components/IconAction.vue';
 import RedirectModal from '../components/RedirectModal.vue';
 import { ClassEntity, getAllClassAPI } from '../services/classService';
 import { useRoute, useRouter } from 'vue-router';
@@ -334,15 +376,16 @@ const getStudents = async ()=>{
               studentList.value = result.data;
               pageInfor.totalPage = Math.ceil(result.totalStudent / pagination.value.limit)
               pageInfor.totalStudent = result.totalStudent
-              setTimeout(()=>{
-                isLoading.value = false
-              }, 300)
         }
         if(result.isSuccess === false) {
            isShowLoginDirectModal.value = true
         }
     } catch (error) {
         console.error('Filter error:', error);
+    } finally {
+        setTimeout(()=>{
+          isLoading.value = false
+          }, 800)
     }
 }
 
@@ -397,8 +440,11 @@ onMounted(async ()=>{
 .demo-container {
     height: 60rem;
     max-height: 85vh;
-    width: 90rem;
-    max-width: 80vw;
+    width: 100rem;
+    max-width: 90vw;
+}
+.list-leave-active {
+  position: absolute;
 }
 
 .list-enter-active{

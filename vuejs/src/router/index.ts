@@ -55,7 +55,18 @@ const router: Router = createRouter({
       path: '/students',
       name: 'Final Demo',
       component: StudentView,
-      meta: { requiresAuth: true, redirectAfterLogin: true }
+      meta: { requiresAuth: true, redirectAfterLogin: true },
+      beforeEnter: (to, from, next) => {
+        const token = localStorage.getItem('access_token')
+        if (!token) {
+          next({
+            path: '/auth',
+            query: { redirect: to.fullPath }
+          })
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/class',

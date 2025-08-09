@@ -48,8 +48,9 @@ export class UserController {
 
     @UseGuards(JwtAuthGuard)
     @Get('me')
-    getMe(@Req() req: any) {
-        return req.user;
+    async getMe(@Req() req: any) {
+        return this.userService.getMe(req.user);
     }
+
 
 }

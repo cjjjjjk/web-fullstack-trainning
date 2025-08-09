@@ -164,6 +164,25 @@ export class UserService implements OnApplicationBootstrap, OnApplicationShutdow
         const user: User | null = await this.userRepo.findOneBy({ phone: phone });
         return user
     }
+
+    // get me
+    async getMe(user: any): Promise<User | { error: string }> {
+        if (!user || !user.id) {
+            return { error: 'Invalid token payload: Missing user ID' };
+        }
+
+        const foundUser = await this.userRepo.findOne({
+            where: { id: user.id },
+            select: ['id', 'name', 'phone', 'role', 'address'] // select cụ thể nếu muốn bảo mật hơn
+        });
+
+        if (!foundUser) {
+            return { error: 'User not found' };
+        }
+
+        return foundUser;
+    }
+
 }
 
 
