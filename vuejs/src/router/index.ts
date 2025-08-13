@@ -1,23 +1,22 @@
 import { createRouter, createWebHistory, type Router } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import AuthDemoView from '../views/AuthDemoView.vue';
 
 import AboutView from '../views/AboutView.vue';
-import StudentView from '../views/StudentView.vue';
 import ClassView from '../views/ClassView.vue';
+import LandingPage from '../views/LandingPage.vue';
 
 const router: Router = createRouter({
   history: createWebHistory('/'),
   routes: [
     {
       path: '/',
-      redirect: 'students'
+      component: LandingPage
     },
     {
       path: '/home',
       name: 'home',
-      component: HomeView,
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/about',
@@ -54,7 +53,7 @@ const router: Router = createRouter({
     {
       path: '/students',
       name: 'Final Demo',
-      component: StudentView,
+      component: () => import('../views/StudentView.vue'),
       meta: { requiresAuth: true, redirectAfterLogin: true },
       beforeEnter: (to, from, next) => {
         const token = localStorage.getItem('access_token')

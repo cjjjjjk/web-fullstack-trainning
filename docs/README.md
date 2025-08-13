@@ -31,3 +31,15 @@
 - Dockerfile
 - Docker compose
 - Docker network
+
+**DEMO** | Student/Class management  
+Landing page  
+![alt text](image.png)  
+Auth  
+![alt text](image-1.png)  
+Class  
+![alt text](image-2.png)  
+Students  
+![alt text](image-3.png)  
+Theme: Darkmode  
+![alt text](image-4.png) ![alt text](image-5.png)

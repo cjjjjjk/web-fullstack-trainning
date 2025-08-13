@@ -263,7 +263,6 @@
       </div>
     </div>
   </div>
-
   <StudentModal
     v-if="showModal"
     :type="editMode ? 'edit' : 'add'"

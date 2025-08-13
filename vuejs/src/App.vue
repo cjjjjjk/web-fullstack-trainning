@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import IconUser from './components/IconUser.vue';
 import { useUiStore } from './stores/uiStore';
 
+
+const router = useRouter()
 const uiStore = useUiStore()
 const flex_column = ref('flex flex-column')
 
@@ -15,12 +17,18 @@ const toggleTheme = (isDarkTheme: boolean) =>{
 onMounted(()=>{
     uiStore.loadTheme()
 })
+
+const direct = (url: string)=>{
+  router.push(url)
+}
 </script>
 
 <template>
   <header class="flex justify-center items-center py-2 bg-gradient-to-r from-[var(--bg-card)] via-[var(--bg-card-accent)] to-[var(--bg-card)]">
     <div class="navbar w-[100rem] max-w-[90vw] bg-[var(--bg-card)]/90 backdrop-blur-md transition-colors duration-500 shadow-sm rounded-sm px-2 py-2">
-      <div class="flex-1 flex items-center gap-3">
+      <div class="flex-1 flex items-center gap-3 hover:cursor-pointer"
+        @click="direct('/')"
+      >
         <h3 class="text-2xl font-extrabold text-[var(--text-main)] tracking-tight ms-2">DEMO</h3>
       </div>
       <div class="flex-none">

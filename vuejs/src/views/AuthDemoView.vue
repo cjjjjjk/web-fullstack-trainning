@@ -1,7 +1,7 @@
 <template>
   <div class="demo-container flex flex-row-reverse">
     <!-- Left: Forms -->
-    <div class="w-1/3 flex items-center justify-center ">
+    <div class="w-2/5 flex items-center justify-center ">
       <div class="w-full max-w-md">
         <Transition 
             v-if="!isLogin && !isSignUp"
@@ -169,7 +169,7 @@
             <!-- Card User Info -->
             <div 
               v-if="userInfor && !isLoading"
-              class="card bg-[var(--bg-card-accent)]/50 border-[1.5px] border-[var(--border-table)] shadow-md transition-all duration-300 relative"
+              class="card bg-[var(--bg-card-accent)]/20 border-[1.5px] border-[var(--border-table)] transition-all duration-300 relative"
             >
               <div class="card-body relative">
                 <!-- Decorative corner -->
@@ -180,7 +180,7 @@
                   <h2 class="card-title text-[var(--text-main)] text-xl font-semibold">
                     {{ userInfor.name }}
                   </h2>
-                  <div class="badge bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] px-4 py-1 text-sm font-semibold rounded-lg">
+                  <div class="badge bg-[var(--bg-button-primary)] text-[var(--text-button-primary)] p-3 text-sm font-semibold rounded-lg">
                     {{ userInfor.role }}
                   </div>
                 </div>
@@ -209,20 +209,6 @@
               <span class="loading loading-bars loading-xl text-[var(--text-loading)]"></span>
             </div>
 
-            <!-- Admin content section -->
-            <div 
-              v-if="adminContent"
-              class="alert shadow-sm border-[1.5px] border-[var(--border-table)]"
-              :class="adminContent.status == 200 ? 'bg-[var(--accent-primary)]/20 text-[var(--text-main)]' : 'bg-[var(--error)]/20 text-[var(--text-main)]'"
-            >
-              <div class="flex flex-col gap-1">
-                <span class="font-semibold text-[var(--text-main)]">{{ adminContent.title ?? 'Status...' }}</span>
-                <div class="text-sm">
-                  <span v-if="adminContent.status == 200">Content ID: {{ adminContent.id }}</span><br>
-                  <span>{{ adminContent.content }}</span>
-                </div>
-              </div>
-            </div>
 
             <!-- Logout button -->
             <button

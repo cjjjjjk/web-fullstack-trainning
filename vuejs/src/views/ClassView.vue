@@ -1,5 +1,5 @@
   <template>
-    <div class="demo-container flex gap-2 rounded-xl ">
+    <div class="demo-container grid gap-2 rounded-xl ">
       <div class="data-container rounded-sm px-4 py-6 grow flex flex-col bg-[var(--bg-card)]/90 backdrop-blur-md shadow-sm transition-all duration-300">
         <div class="flex w-full items-center mb-6">
           <h2 class="font-extrabold text-2xl text-[var(--text-main)] flex items-center gap-3">
@@ -149,6 +149,8 @@
           <canvas id="studentsChart" class="max-h-[100%] max-w-[65%]"></canvas>
           <canvas id="studentsChart2"></canvas>
         </div>
+      </div>
+      <div class="h-12 bg-[var(--bg-card)]/90 rounded-t-sm shadow-sm">
       </div>
     </div>
     <RedirectModal v-if="isShowLoginDirectModal"/>

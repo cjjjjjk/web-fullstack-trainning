@@ -151,6 +151,7 @@ const handleDelete= async (code: string) => {
       emitClose() }
       else {
         console.log('DELETE CLASS FALSE! ')
+        alert( 'Delete fail, this class has students')
       }
 }
 </script>
